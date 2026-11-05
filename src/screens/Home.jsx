@@ -19,7 +19,7 @@ const FILTER_CATEGORIES = [
   { id: 'other', name: 'Other' },
 ]
 
-export default function Home() {
+export default function Home({ onEditBill }) {
   // Real IndexedDB bills hook
   const { bills, loading, remove, restore } = useBills()
 
@@ -486,7 +486,10 @@ export default function Home() {
       >
         <BillDetails
           bill={selectedBill}
-          onEdit={(b) => console.log('edit', b)}
+          onEdit={(b) => {
+            setSelectedBill(null)
+            onEditBill?.(b)
+          }}
           onDelete={handleDeleteBill}
         />
       </BottomSheet>

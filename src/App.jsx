@@ -8,7 +8,7 @@ import SnapPicker from './components/SnapPicker'
 import Reading from './screens/Reading'
 import NotBill from './screens/NotBill'
 import SnapError from './screens/SnapError'
-import ReviewPlaceholder from './screens/ReviewPlaceholder'
+import Review from './screens/Review'
 import Toast from './components/Toast'
 import { useBills } from './lib/useBills'
 import { useImagePicker } from './lib/useImagePicker'
@@ -27,14 +27,14 @@ export default function App() {
   // Snap picker BottomSheet open state
   const [pickerOpen, setPickerOpen] = useState(false)
 
-  // Snap flow state: null | { step: "reading"|"notbill"|"error"|"review", ... }
+  // Snap flow state: null | { step: "reading"|"notbill"|"error"|"review"|"edit", ... }
   const [flow, setFlow] = useState(null)
 
-  // Toast notification for picker/saving messages
+  // Toast notification for flow & save messages
   const [toastMessage, setToastMessage] = useState(null)
 
-  // DB hook for saving bills
-  const { add } = useBills()
+  // DB hook for adding and updating bills
+  const { add, update } = useBills()
 
   // Camera & Gallery image picker hook
   const {
@@ -71,7 +71,7 @@ export default function App() {
     setPickerOpen(true)
   }
 
-  // Saving a bill from the review placeholder
+  // Saving a new bill from Review
   const handleSaveBill = async (billData) => {
     try {
       await add(billData)
@@ -80,6 +80,17 @@ export default function App() {
       setToastMessage('Bill saved')
     } catch (err) {
       setToastMessage(err.message || 'Failed to save bill')
+    }
+  }
+
+  // Saving an edited bill
+  const handleSaveEditedBill = async (updatedBill) => {
+    try {
+      await update(updatedBill)
+      setFlow(null)
+      setToastMessage('Changes saved')
+    } catch (err) {
+      setToastMessage(err.message || 'Failed to save changes')
     }
   }
 
@@ -123,10 +134,21 @@ export default function App() {
         )}
 
         {flow.step === 'review' && (
-          <ReviewPlaceholder
+          <Review
+            mode="new"
             image={flow.image}
             analysis={flow.analysis}
             onSave={handleSaveBill}
+            onDiscard={() => setFlow(null)}
+            onRetake={openCamera}
+          />
+        )}
+
+        {flow.step === 'edit' && (
+          <Review
+            mode="edit"
+            bill={flow.bill}
+            onSave={handleSaveEditedBill}
             onDiscard={() => setFlow(null)}
           />
         )}
@@ -188,7 +210,11 @@ export default function App() {
       showBottomNav={flow === null}
       overlay={renderFlowOverlay()}
     >
-      {tab === 'bills' ? <Home /> : <Insights />}
+      {tab === 'bills' ? (
+        <Home onEditBill={(bill) => setFlow({ step: 'edit', bill })} />
+      ) : (
+        <Insights />
+      )}
 
       {/* Hidden Camera and Gallery Inputs */}
       <input
