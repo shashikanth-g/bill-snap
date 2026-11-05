@@ -213,7 +213,7 @@ export default function App() {
       {tab === 'bills' ? (
         <Home onEditBill={(bill) => setFlow({ step: 'edit', bill })} />
       ) : (
-        <Insights />
+        <Insights onSnap={handleSnap} />
       )}
 
       {/* Hidden Camera and Gallery Inputs */}
