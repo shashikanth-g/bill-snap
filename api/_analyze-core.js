@@ -98,11 +98,15 @@ export async function analyzeImage({ base64, mimeType = 'image/jpeg', apiKey, mo
       } catch (retryErr) {
         const error = new Error('The reader is busy right now. Please try again.')
         error.code = retryErr.status === 429 ? 'rate_limited' : 'ai_unavailable'
+        error.status = retryErr.status || retryErr.statusCode || status
+        error.rawMessage = retryErr.message || err.message
         throw error
       }
     } else {
       const error = new Error(err.message || 'AI service unavailable')
       error.code = err.code || 'ai_unavailable'
+      error.status = status
+      error.rawMessage = err.message
       throw error
     }
   }
