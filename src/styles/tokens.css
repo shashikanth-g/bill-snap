@@ -1,0 +1,12 @@
+/* Design tokens for Bill Snap */
+:root {
+  --bg:#F7F8FA; --surface:#FFFFFF; --ink:#111827; --ink-strong:#1E1B4B; --muted:#6B7280; --line:#E5E7EB;
+  --primary:#4F46E5; --primary-light:#6366F1; --primary-dark:#4338CA; --primary-edge:#312E81;
+  --primary-tint:#EEF0FF; --primary-tint-2:#E0E7FF;
+  --mint:#2DD4BF; --mint-light:#7CF0DC; --mint-edge:#0F9D8A;
+  --amber:#F59E0B; --amber-bg:#FFFBEB; --amber-soft:#FEF3C7; --amber-ink:#92400E; --amber-edge:#FCD34D;
+  --success-bg:#DCFCE7; --success-ink:#166534;
+  --edge-grey:#D9DDE6; --edge-card:#E3E6EE;
+  --font:'Inter',system-ui,sans-serif;
+}
+

@@ -1,0 +1,346 @@
+/* Splash Screen Animation Styles */
+:root {
+  --splash-dur: 2.4s;
+}
+
+/* Full screen column matching phone container */
+.splash-screen {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  max-width: 430px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--bg);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: opacity 0.3s ease-out;
+  box-shadow: 0 0 32px rgba(17, 24, 39, 0.08);
+}
+
+.splash-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Background blurred blobs */
+.splash-blob-1 {
+  position: absolute;
+  left: -130px;
+  top: -90px;
+  width: 340px;
+  height: 340px;
+  border-radius: 170px;
+  background: #A5B4FC;
+  opacity: 0.5;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.splash-blob-2 {
+  position: absolute;
+  right: -170px;
+  bottom: -110px;
+  width: 380px;
+  height: 380px;
+  border-radius: 190px;
+  background: #5EEAD4;
+  opacity: 0.28;
+  filter: blur(70px);
+  pointer-events: none;
+}
+
+/* Central Animation Stage */
+.splash-stage {
+  position: relative;
+  width: 100%;
+  height: 290px;
+  margin-top: 26dvh;
+}
+
+/* 1. Receipt */
+.splash-receipt {
+  position: absolute;
+  width: 220px;
+  height: 290px;
+  left: 50%;
+  margin-left: -110px;
+  top: 0;
+  background: #FFFFFF;
+  border-radius: 26px;
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+  box-sizing: border-box;
+  box-shadow: 0 22px 44px rgba(49, 46, 129, 0.16), 0 6px 0 #DDE1EE;
+  animation: billIn var(--splash-dur) cubic-bezier(.3, .9, .3, 1) both;
+}
+
+/* Receipt Header */
+.splash-receipt-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.splash-receipt-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  background: #E0E7FF;
+  flex-shrink: 0;
+}
+
+.splash-receipt-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.splash-receipt-bar-1 {
+  width: 90px;
+  height: 7px;
+  border-radius: 4px;
+  background: #E4E7F0;
+}
+
+.splash-receipt-bar-2 {
+  width: 60px;
+  height: 7px;
+  border-radius: 4px;
+  background: #EEF0F6;
+}
+
+/* Receipt Rows */
+.splash-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #F3F4FB;
+  border-radius: 14px;
+  padding: 9px 12px;
+}
+
+.splash-row-total {
+  background: #E0E7FF;
+}
+
+.splash-row-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.splash-row-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #5B6478;
+}
+
+.splash-row-total .splash-row-label {
+  color: #3730A3;
+}
+
+.splash-row-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+
+.splash-row-val-total {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink-strong);
+}
+
+.splash-check-badge {
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background: #4F46E5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Scan line */
+.splash-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 46px;
+  background: linear-gradient(180deg, rgba(94, 234, 212, 0), rgba(94, 234, 212, 0.65));
+  border-bottom: 3px solid #5EEAD4;
+  box-shadow: 0 8px 24px rgba(94, 234, 212, 0.9);
+  pointer-events: none;
+  animation: scan var(--splash-dur) ease-in-out both;
+}
+
+/* Animated rows */
+.splash-row-1 {
+  animation: pop1 var(--splash-dur) cubic-bezier(.3, 1.4, .5, 1) both;
+}
+
+.splash-row-2 {
+  animation: pop2 var(--splash-dur) cubic-bezier(.3, 1.4, .5, 1) both;
+}
+
+.splash-row-3 {
+  animation: pop3 var(--splash-dur) cubic-bezier(.3, 1.4, .5, 1) both;
+}
+
+/* 2. Expanding Ring */
+.splash-ring {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  left: 50%;
+  margin-left: -60px;
+  top: 64px;
+  border-radius: 40px;
+  border: 3px solid #5EEAD4;
+  box-sizing: border-box;
+  pointer-events: none;
+  animation: ring var(--splash-dur) ease-out both;
+}
+
+/* 3. 3D App Logo */
+.splash-logo {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  left: 50%;
+  margin-left: -60px;
+  top: 64px;
+  border-radius: 38px;
+  background: linear-gradient(160deg, #6366F1, #4338CA);
+  box-shadow: 0 10px 0 #312E81, 0 26px 38px rgba(67, 56, 202, 0.38), inset 0 3px 0 rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  animation: logoPop var(--splash-dur) cubic-bezier(.3, 1.5, .5, 1) both;
+}
+
+/* Spark inside logo */
+.splash-spark {
+  position: absolute;
+  right: -16px;
+  top: -18px;
+  width: 38px;
+  height: 38px;
+  animation: spark var(--splash-dur) cubic-bezier(.3, 1.5, .5, 1) both;
+}
+
+/* 4. Title & Tagline */
+.splash-title {
+  position: absolute;
+  top: 226px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -1.2px;
+  color: var(--ink-strong);
+  animation: titleUp var(--splash-dur) cubic-bezier(.3, .9, .3, 1) both;
+}
+
+.splash-title span {
+  color: var(--primary);
+}
+
+.splash-tagline {
+  position: absolute;
+  top: 278px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: #4B5568;
+  animation: tagUp var(--splash-dur) cubic-bezier(.3, .9, .3, 1) both;
+}
+
+/* Keyframes */
+@keyframes billIn {
+  0% { transform: translateX(-420px) rotate(-10deg); opacity: 0; }
+  8% { opacity: 1; }
+  21% { transform: translateX(0) rotate(0); opacity: 1; }
+  46% { transform: translateX(0) scale(1); opacity: 1; }
+  54%, 100% { transform: translateY(40px) scale(.3); opacity: 0; }
+}
+
+@keyframes scan {
+  0%, 20% { transform: translateY(-50px); opacity: 0; }
+  22% { opacity: 1; }
+  42% { transform: translateY(294px); opacity: 1; }
+  45%, 100% { transform: translateY(294px); opacity: 0; }
+}
+
+@keyframes pop1 {
+  0%, 25% { opacity: 0; transform: scale(.7); }
+  33%, 100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pop2 {
+  0%, 31% { opacity: 0; transform: scale(.7); }
+  39%, 100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pop3 {
+  0%, 37% { opacity: 0; transform: scale(.7); }
+  45%, 100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes logoPop {
+  0%, 52% { opacity: 0; transform: scale(.3); }
+  62% { opacity: 1; transform: scale(1.1); }
+  68%, 100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes ring {
+  0%, 58% { opacity: 0; transform: scale(.8); }
+  62% { opacity: .7; transform: scale(.9); }
+  90%, 100% { opacity: 0; transform: scale(1.9); }
+}
+
+@keyframes spark {
+  0%, 62% { opacity: 0; transform: scale(.2) rotate(-40deg); }
+  72% { opacity: 1; transform: scale(1.25) rotate(0); }
+  78%, 100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@keyframes titleUp {
+  0%, 60% { opacity: 0; transform: translateY(18px); }
+  72%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tagUp {
+  0%, 68% { opacity: 0; transform: translateY(18px); }
+  80%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Reduced Motion: no movement, show logo + title statically */
+@media (prefers-reduced-motion: reduce) {
+  .splash-receipt,
+  .splash-scan,
+  .splash-ring {
+    display: none !important;
+  }
+
+  .splash-logo,
+  .splash-spark,
+  .splash-title,
+  .splash-tagline {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
