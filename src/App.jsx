@@ -4,6 +4,15 @@ import Splash from './screens/Splash'
 import Home from './screens/Home'
 import Insights from './screens/Insights'
 import DesignCheck from './screens/DesignCheck'
+import SnapPicker from './components/SnapPicker'
+import Reading from './screens/Reading'
+import NotBill from './screens/NotBill'
+import SnapError from './screens/SnapError'
+import ReviewPlaceholder from './screens/ReviewPlaceholder'
+import Toast from './components/Toast'
+import { useBills } from './lib/useBills'
+import { useImagePicker } from './lib/useImagePicker'
+import './styles/flow.css'
 
 export default function App() {
   // Splash screen state: plays once per full page load
@@ -14,6 +23,37 @@ export default function App() {
 
   // URL hash to toggle the design check demo (window.location.hash === "#design")
   const [hash, setHash] = useState(window.location.hash)
+
+  // Snap picker BottomSheet open state
+  const [pickerOpen, setPickerOpen] = useState(false)
+
+  // Snap flow state: null | { step: "reading"|"notbill"|"error"|"review", ... }
+  const [flow, setFlow] = useState(null)
+
+  // Toast notification for picker/saving messages
+  const [toastMessage, setToastMessage] = useState(null)
+
+  // DB hook for saving bills
+  const { add } = useBills()
+
+  // Camera & Gallery image picker hook
+  const {
+    cameraInputRef,
+    galleryInputRef,
+    openCamera,
+    openGallery,
+    handleFileChange,
+  } = useImagePicker({
+    onImagePicked: (image) => {
+      setPickerOpen(false)
+      setFlow({ step: 'reading', image })
+    },
+    onError: (msg) => {
+      setPickerOpen(false)
+      setFlow(null)
+      setToastMessage(msg)
+    },
+  })
 
   useEffect(() => {
     const handleHashChange = () => setHash(window.location.hash)
@@ -26,24 +66,159 @@ export default function App() {
     return <Splash onDone={() => setSplashDone(true)} />
   }
 
-  // Snap button click handler for now
+  // Tapping the mint Snap button opens the SnapPicker bottom sheet
   const handleSnap = () => {
-    console.log('snap')
+    setPickerOpen(true)
+  }
+
+  // Saving a bill from the review placeholder
+  const handleSaveBill = async (billData) => {
+    try {
+      await add(billData)
+      setFlow(null)
+      setTab('bills')
+      setToastMessage('Bill saved')
+    } catch (err) {
+      setToastMessage(err.message || 'Failed to save bill')
+    }
+  }
+
+  // Render active flow step overlay
+  const renderFlowOverlay = () => {
+    if (!flow) return null
+
+    return (
+      <div className="flow-overlay">
+        {flow.step === 'reading' && (
+          <Reading
+            image={flow.image}
+            onSuccess={(analysis) =>
+              setFlow({ step: 'review', image: flow.image, analysis })
+            }
+            onNotBill={(reason) =>
+              setFlow({ step: 'notbill', image: flow.image, reason })
+            }
+            onError={(message) =>
+              setFlow({ step: 'error', image: flow.image, message })
+            }
+            onCancel={() => setFlow(null)}
+          />
+        )}
+
+        {flow.step === 'notbill' && (
+          <NotBill
+            reason={flow.reason}
+            onHome={() => setFlow(null)}
+            openCamera={openCamera}
+            openGallery={openGallery}
+          />
+        )}
+
+        {flow.step === 'error' && (
+          <SnapError
+            message={flow.message}
+            onRetry={() => setFlow({ step: 'reading', image: flow.image })}
+            onCancel={() => setFlow(null)}
+          />
+        )}
+
+        {flow.step === 'review' && (
+          <ReviewPlaceholder
+            image={flow.image}
+            analysis={flow.analysis}
+            onSave={handleSaveBill}
+            onDiscard={() => setFlow(null)}
+          />
+        )}
+      </div>
+    )
   }
 
   // If hash is "#design", render the design check demo screen
   if (hash === '#design') {
     return (
-      <AppShell tab={tab} setTab={setTab} onSnap={handleSnap}>
+      <AppShell
+        tab={tab}
+        setTab={setTab}
+        onSnap={handleSnap}
+        showBottomNav={flow === null}
+        overlay={renderFlowOverlay()}
+      >
         <DesignCheck />
+
+        {/* Hidden Camera and Gallery Inputs */}
+        <input
+          ref={cameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
+        <input
+          ref={galleryInputRef}
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
+
+        {/* Snap Picker Bottom Sheet */}
+        <SnapPicker
+          isOpen={pickerOpen}
+          onClose={() => setPickerOpen(false)}
+          onCamera={openCamera}
+          onGallery={openGallery}
+        />
+
+        {/* App-level Toast */}
+        {toastMessage && (
+          <Toast message={toastMessage} onClose={() => setToastMessage(null)} />
+        )}
       </AppShell>
     )
   }
 
   // Render Home screen or Insights screen based on active tab
   return (
-    <AppShell tab={tab} setTab={setTab} onSnap={handleSnap}>
+    <AppShell
+      tab={tab}
+      setTab={setTab}
+      onSnap={handleSnap}
+      showBottomNav={flow === null}
+      overlay={renderFlowOverlay()}
+    >
       {tab === 'bills' ? <Home /> : <Insights />}
+
+      {/* Hidden Camera and Gallery Inputs */}
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
+      <input
+        ref={galleryInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
+
+      {/* Snap Picker Bottom Sheet */}
+      <SnapPicker
+        isOpen={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        onCamera={openCamera}
+        onGallery={openGallery}
+      />
+
+      {/* App-level Toast */}
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage(null)} />
+      )}
     </AppShell>
   )
 }

@@ -22,18 +22,40 @@ function createError(code, customMessage) {
 
 /**
  * Sends bill image base64 data to /api/analyze and returns the analysis result.
+ * Accepts an optional AbortSignal.
  * Handles offline checks, 30s client timeout, and normalizes errors to friendly messages.
  */
-export async function analyzeBill({ base64, mimeType = 'image/jpeg' }) {
+export async function analyzeBill({ base64, mimeType = 'image/jpeg', signal }) {
   // Check online status before making the request
   if (typeof navigator !== 'undefined' && navigator.onLine === false) {
     throw createError('offline')
   }
 
-  const controller = new AbortController()
+  // If already aborted before request starts
+  if (signal?.aborted) {
+    const abortErr = new Error('Aborted')
+    abortErr.name = 'AbortError'
+    throw abortErr
+  }
+
+  const timeoutController = new AbortController()
   const timeoutId = setTimeout(() => {
-    controller.abort()
+    timeoutController.abort()
   }, 30000) // 30 second client timeout
+
+  // Combine external cancellation signal with internal timeout
+  let fetchSignal = timeoutController.signal
+  if (signal) {
+    if (typeof AbortSignal.any === 'function') {
+      fetchSignal = AbortSignal.any([timeoutController.signal, signal])
+    } else {
+      const merged = new AbortController()
+      const onAbort = () => merged.abort()
+      timeoutController.signal.addEventListener('abort', onAbort)
+      signal.addEventListener('abort', onAbort)
+      fetchSignal = merged.signal
+    }
+  }
 
   try {
     const response = await fetch('/api/analyze', {
@@ -42,7 +64,7 @@ export async function analyzeBill({ base64, mimeType = 'image/jpeg' }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ image: base64, mimeType }),
-      signal: controller.signal,
+      signal: fetchSignal,
     })
 
     clearTimeout(timeoutId)
@@ -64,6 +86,13 @@ export async function analyzeBill({ base64, mimeType = 'image/jpeg' }) {
   } catch (err) {
     clearTimeout(timeoutId)
 
+    // User-initiated abort: rethrow without error wrapping so caller ignores cleanly
+    if (signal?.aborted) {
+      const abortErr = new Error('Aborted')
+      abortErr.name = 'AbortError'
+      throw abortErr
+    }
+
     if (err.name === 'AbortError') {
       throw createError('timeout')
     }
@@ -79,4 +108,3 @@ export async function analyzeBill({ base64, mimeType = 'image/jpeg' }) {
     throw createError('server_error', err.message)
   }
 }
-

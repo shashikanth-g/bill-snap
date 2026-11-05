@@ -1,0 +1,291 @@
+/* Flow Overlay and Snap Screens Styles */
+
+/* Fullscreen flow overlay inside the 430px column */
+.flow-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Snap Picker (Bottom Sheet Content) */
+.snap-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+  padding: 4px 0 8px;
+}
+
+.snap-picker-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink-strong);
+  margin: 0;
+}
+
+.snap-picker-hint {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+
+.snap-picker-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.snap-picker-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+}
+
+/* Reading Screen */
+.reading-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+  padding: max(16px, env(safe-area-inset-top)) 20px calc(24px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.reading-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.reading-card {
+  position: relative;
+  max-width: 280px;
+  max-height: 380px;
+  width: 100%;
+  margin: 16px auto;
+  border-radius: 24px;
+  background: #FFFFFF;
+  box-shadow: 0 12px 30px rgba(49, 46, 129, 0.18);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reading-image {
+  width: 100%;
+  max-height: 380px;
+  object-fit: contain;
+  display: block;
+}
+
+.reading-scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(180deg, rgba(94, 234, 212, 0), rgba(94, 234, 212, 0.6));
+  border-bottom: 3px solid #5EEAD4;
+  box-shadow: 0 8px 24px rgba(94, 234, 212, 0.9);
+  animation: sweepScan 1.6s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes sweepScan {
+  0% {
+    top: -40px;
+  }
+  100% {
+    top: calc(100% - 40px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reading-scan-line {
+    animation: none;
+    top: calc(50% - 20px);
+  }
+}
+
+.reading-status {
+  text-align: center;
+  margin: 12px 0 20px;
+}
+
+.reading-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink-strong);
+  margin-bottom: 6px;
+}
+
+.reading-hint {
+  font-size: 14px;
+  color: #4B5568;
+  min-height: 20px;
+}
+
+/* Not A Bill & Error Screens */
+.feedback-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+  padding: max(16px, env(safe-area-inset-top)) 20px calc(24px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.feedback-tile-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 16px;
+}
+
+.feedback-tile {
+  width: 150px;
+  height: 150px;
+  border-radius: 46px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: floatTile 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatTile {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feedback-tile {
+    animation: none;
+  }
+}
+
+/* Floating tile variants */
+.tile-notbill {
+  background: linear-gradient(160deg, #EEF0FF, #C7D2FE);
+  box-shadow: 0 10px 0 #A5B4FC, 0 26px 34px rgba(67, 56, 202, 0.22), inset 0 3px 0 rgba(255, 255, 255, 0.85);
+}
+
+.tile-error {
+  background: linear-gradient(160deg, #FFFBEB, #FEF3C7);
+  box-shadow: 0 10px 0 #FCD34D, 0 26px 34px rgba(245, 158, 11, 0.22), inset 0 3px 0 rgba(255, 255, 255, 0.85);
+}
+
+.tile-dot-mint {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7CF0DC, #2DD4BF);
+  box-shadow: 0 4px 0 #0F9D8A;
+}
+
+.feedback-copy {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.feedback-title {
+  font-size: 27px;
+  font-weight: 800;
+  color: var(--ink-strong);
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.feedback-reason {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.feedback-body {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Tips card in Not A Bill screen */
+.tips-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.tip-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-strong);
+}
+
+.tip-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary-tint-2);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.feedback-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 0 calc(6px + env(safe-area-inset-bottom));
+}
+
+.feedback-actions button {
+  min-height: 52px;
+}
+
+/* Review Placeholder */
+.review-screen {
+  padding: max(16px, env(safe-area-inset-top)) 20px calc(30px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+.review-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.review-thumb {
+  width: 68px;
+  height: 68px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  background: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.08);
+}
+

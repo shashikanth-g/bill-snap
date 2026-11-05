@@ -1,7 +1,14 @@
 import React from 'react'
 import BottomNav from './BottomNav'
 
-export default function AppShell({ tab, setTab, onSnap, children }) {
+export default function AppShell({
+  tab,
+  setTab,
+  onSnap,
+  showBottomNav = true,
+  overlay = null,
+  children,
+}) {
   return (
     <div className="app-shell">
       {/* Scrollable middle content area */}
@@ -9,8 +16,13 @@ export default function AppShell({ tab, setTab, onSnap, children }) {
         {children}
       </div>
 
-      {/* Fixed bottom navigation bar */}
-      <BottomNav tab={tab} setTab={setTab} onSnap={onSnap} />
+      {/* Full-screen flow overlay (inside 430px column, above everything) */}
+      {overlay}
+
+      {/* Fixed bottom navigation bar (hidden while flow is active) */}
+      {showBottomNav ? (
+        <BottomNav tab={tab} setTab={setTab} onSnap={onSnap} />
+      ) : null}
     </div>
   )
 }
