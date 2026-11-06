@@ -8,5 +8,10 @@
   --success-bg:#DCFCE7; --success-ink:#166534;
   --edge-grey:#D9DDE6; --edge-card:#E3E6EE;
   --font:'Inter',system-ui,sans-serif;
-}
 
+  /* Stacking order tokens */
+  --z-nav: 50;
+  --z-backdrop: 90;
+  --z-sheet: 100;
+  --z-toast: 110;
+}

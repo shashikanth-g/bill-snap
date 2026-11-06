@@ -14,8 +14,8 @@ export default function SnapPicker({ isOpen, onClose, onCamera, onGallery }) {
           <button
             className="btn-primary"
             onClick={() => {
-              onClose()
               onCamera()
+              onClose()
             }}
           >
             <svg
@@ -38,8 +38,8 @@ export default function SnapPicker({ isOpen, onClose, onCamera, onGallery }) {
           <button
             className="btn-ghost"
             onClick={() => {
-              onClose()
               onGallery()
+              onClose()
             }}
           >
             <svg
@@ -59,9 +59,15 @@ export default function SnapPicker({ isOpen, onClose, onCamera, onGallery }) {
             </svg>
             <span>Choose from gallery</span>
           </button>
+
+          <button
+            className="btn-ghost snap-picker-cancel"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
         </div>
       </div>
     </BottomSheet>
   )
 }
-

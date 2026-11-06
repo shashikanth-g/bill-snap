@@ -96,17 +96,17 @@ export default function Home({ onEditBill }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '20px 16px 6px 16px',
+          padding: '16px 16px 4px 16px',
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <span style={{ fontSize: '13px', color: 'var(--muted)', fontWeight: '500' }}>
+          <span style={{ fontSize: '12.5px', color: 'var(--muted)', fontWeight: '500' }}>
             {greeting()}
           </span>
           <h1
             style={{
               margin: 0,
-              fontSize: '24px',
+              fontSize: '22px',
               fontWeight: '800',
               letterSpacing: '-0.5px',
               color: 'var(--ink-strong)',
@@ -203,16 +203,16 @@ export default function Home({ onEditBill }) {
       </div>
 
       {/* 2. Hero summary card */}
-      <section style={{ margin: '10px 16px 0 16px' }}>
+      <section style={{ margin: '8px 16px 0 16px' }}>
         <div
           className="hero-card"
           style={{
             position: 'relative',
             overflow: 'hidden',
-            padding: '18px',
+            padding: '14px 16px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '12px',
+            gap: '10px',
           }}
         >
           {/* Decorative blurred circles */}
@@ -221,9 +221,9 @@ export default function Home({ onEditBill }) {
               position: 'absolute',
               right: '-40px',
               top: '-50px',
-              width: '150px',
-              height: '150px',
-              borderRadius: '75px',
+              width: '140px',
+              height: '140px',
+              borderRadius: '70px',
               background: '#8B7CFF',
               opacity: 0.45,
               filter: 'blur(8px)',
@@ -236,9 +236,9 @@ export default function Home({ onEditBill }) {
               position: 'absolute',
               right: '30px',
               bottom: '-70px',
-              width: '110px',
-              height: '110px',
-              borderRadius: '55px',
+              width: '100px',
+              height: '100px',
+              borderRadius: '50px',
               background: '#5EEAD4',
               opacity: 0.22,
               filter: 'blur(14px)',
@@ -249,7 +249,7 @@ export default function Home({ onEditBill }) {
 
           {/* Row 1: Spent in {monthLabel} + count pill */}
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '12.5px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.9)' }}>
+            <span style={{ fontSize: '12px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.9)' }}>
               Spent in {monthLabel}
             </span>
             <span
@@ -266,7 +266,7 @@ export default function Home({ onEditBill }) {
           </div>
 
           {/* Row 2: Total amount */}
-          <div style={{ position: 'relative', fontSize: '32px', fontWeight: '800', letterSpacing: '-1px', lineHeight: 1 }}>
+          <div style={{ position: 'relative', fontSize: '28px', fontWeight: '800', letterSpacing: '-0.8px', lineHeight: 1 }}>
             {formatINR(total)}
           </div>
 
@@ -275,8 +275,8 @@ export default function Home({ onEditBill }) {
             style={{
               position: 'relative',
               display: 'flex',
-              height: '7px',
-              borderRadius: '3.5px',
+              height: '6px',
+              borderRadius: '3px',
               overflow: 'hidden',
               gap: '2px',
             }}
@@ -336,7 +336,7 @@ export default function Home({ onEditBill }) {
         style={{
           display: 'flex',
           gap: '8px',
-          padding: '18px 16px 6px 16px',
+          padding: '14px 16px 4px 16px',
           overflowX: 'auto',
           WebkitOverflowScrolling: 'touch',
         }}
@@ -346,7 +346,7 @@ export default function Home({ onEditBill }) {
           return (
             <button
               key={cat.id}
-              className={isSelected ? 'chip-on' : 'chip'}
+              className={`chip ${isSelected ? 'chip-on' : ''}`}
               onClick={() => setSelectedCategory(cat.id)}
               style={{ flexShrink: 0 }}
             >
@@ -357,7 +357,7 @@ export default function Home({ onEditBill }) {
       </section>
 
       {/* 4. Section label "RECENT" */}
-      <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--muted)', letterSpacing: '0.4px', padding: '6px 16px 0 16px' }}>
+      <div style={{ fontSize: '11.5px', fontWeight: '600', color: 'var(--muted)', letterSpacing: '0.4px', padding: '4px 16px 0 16px' }}>
         RECENT
       </div>
 

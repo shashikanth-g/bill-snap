@@ -11,6 +11,7 @@ html,
 body {
   min-height: 100%;
   font-family: var(--font);
+  font-size: 15px;
   background-color: #E9EBF0;
   /* Light grey desktop background */
   color: var(--ink);
