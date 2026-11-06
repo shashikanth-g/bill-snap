@@ -1,4 +1,4 @@
-import { UNSURE_BELOW, DATE_MAX_AGE_DAYS, BIG_AMOUNT } from './config'
+import { UNSURE_BELOW, DATE_MAX_AGE_DAYS, BIG_AMOUNT } from './config.js'
 
 /**
  * Pure evaluation function that assesses extracted field values and confidence scores.
