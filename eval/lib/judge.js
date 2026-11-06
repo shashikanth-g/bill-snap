@@ -1,4 +1,7 @@
-import { UNSURE_BELOW, DATE_MAX_AGE_DAYS, BIG_AMOUNT } from '../../src/lib/config.js'
+import { UNSURE_BELOW } from '../../src/lib/config.js'
+import { isFieldUnsure } from '../../src/lib/fieldState.js'
+
+export { isFieldUnsure }
 
 /**
  * Computes standard Levenshtein edit distance between two strings.
@@ -95,30 +98,6 @@ export function judgeCategory(pred, truth) {
   const t = String(truth || '').trim().toLowerCase()
   if (!p || !t) return false
   return p === t
-}
-
-/**
- * Determines whether a field is marked "unsure" under a given confidence threshold.
- */
-export function isFieldUnsure(field, value, confidence, threshold = UNSURE_BELOW, today = new Date()) {
-  if (value === null || value === undefined || value === '') return true
-  if (typeof confidence === 'number' && confidence < threshold) return true
-
-  if (field === 'date') {
-    const refDate = today instanceof Date ? new Date(today) : new Date(today)
-    refDate.setHours(0, 0, 0, 0)
-    const parsedDate = new Date(`${value}T00:00:00`)
-    if (Number.isNaN(parsedDate.getTime())) return true
-    const diffDays = (refDate.getTime() - parsedDate.getTime()) / (1000 * 60 * 60 * 24)
-    if (parsedDate > refDate || diffDays > DATE_MAX_AGE_DAYS) return true
-  }
-
-  if (field === 'total') {
-    const num = Number(value)
-    if (Number.isNaN(num) || num <= 0 || num > BIG_AMOUNT) return true
-  }
-
-  return false
 }
 
 /**

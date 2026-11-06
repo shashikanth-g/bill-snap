@@ -1,6 +1,58 @@
 import { UNSURE_BELOW, DATE_MAX_AGE_DAYS, BIG_AMOUNT } from './config.js'
 
 /**
+ * Pure decision function that determines whether a single extracted field is unsure.
+ *
+ * A field is unsure if:
+ * 1. Its value is null, undefined, or empty.
+ * 2. Its confidence is below the threshold.
+ * 3. For date: the date is invalid, in the future, or older than DATE_MAX_AGE_DAYS.
+ * 4. For total: value is not a finite number, equal to 0, or greater than BIG_AMOUNT.
+ *
+ * @param {string} fieldName - 'merchant' | 'date' | 'total' | 'category'
+ * @param {any} value - Field value
+ * @param {number} [confidence=0] - Confidence score (0.0 to 1.0)
+ * @param {number} [threshold=UNSURE_BELOW] - Confidence threshold
+ * @param {Date|string} [today=new Date()] - Reference date
+ * @returns {boolean} True if unsure, false if ok
+ */
+export function isFieldUnsure(
+  fieldName,
+  value,
+  confidence = 0,
+  threshold = UNSURE_BELOW,
+  today = new Date()
+) {
+  // 1. Missing or empty value
+  if (value === null || value === undefined) return true
+  if (typeof value === 'string' && value.trim() === '') return true
+
+  // 2. Total-specific validations
+  if (fieldName === 'total') {
+    if (typeof value !== 'number' || !Number.isFinite(value)) return true
+    if (value === 0 || value > BIG_AMOUNT) return true
+  }
+
+  // 3. Date-specific validations
+  if (fieldName === 'date') {
+    const dateStr = String(value).trim()
+    const parsedDate = new Date(`${dateStr}T00:00:00`)
+    if (Number.isNaN(parsedDate.getTime())) return true
+
+    const refDate = today instanceof Date ? new Date(today) : new Date(today)
+    refDate.setHours(0, 0, 0, 0)
+    const diffDays = (refDate.getTime() - parsedDate.getTime()) / (1000 * 60 * 60 * 24)
+    if (parsedDate > refDate || diffDays > DATE_MAX_AGE_DAYS) return true
+  }
+
+  // 4. Confidence threshold check
+  const conf = typeof confidence === 'number' ? confidence : 0
+  if (conf < threshold) return true
+
+  return false
+}
+
+/**
  * Pure evaluation function that assesses extracted field values and confidence scores.
  * Determines whether each field is "ok" or "unsure", along with an explanation hint.
  *
@@ -17,15 +69,14 @@ export function evaluateFields(analysis = {}, today = new Date()) {
   const merchantVal = rawMerchant?.value != null ? String(rawMerchant.value).trim() : null
   const merchantConf = typeof rawMerchant?.confidence === 'number' ? rawMerchant.confidence : 0
 
-  let merchantState = 'ok'
+  const merchantUnsure = isFieldUnsure('merchant', merchantVal, merchantConf, UNSURE_BELOW, refDate)
+  let merchantState = merchantUnsure ? 'unsure' : 'ok'
   let merchantHint = null
 
-  if (!merchantVal) {
-    merchantState = 'unsure'
-    merchantHint = "We couldn't read this. Please type it in."
-  } else if (merchantConf < UNSURE_BELOW) {
-    merchantState = 'unsure'
-    merchantHint = 'Not sure about this one. Please check.'
+  if (merchantUnsure) {
+    merchantHint = !merchantVal
+      ? "We couldn't read this. Please type it in."
+      : 'Not sure about this one. Please check.'
   }
 
   // 2. Date evaluation
@@ -33,48 +84,46 @@ export function evaluateFields(analysis = {}, today = new Date()) {
   const dateVal = rawDate?.value ? String(rawDate.value).trim() : null
   const dateConf = typeof rawDate?.confidence === 'number' ? rawDate.confidence : 0
 
-  let dateState = 'ok'
+  const dateUnsure = isFieldUnsure('date', dateVal, dateConf, UNSURE_BELOW, refDate)
+  let dateState = dateUnsure ? 'unsure' : 'ok'
   let dateHint = null
 
-  if (!dateVal) {
-    dateState = 'unsure'
-    dateHint = "We couldn't read this. Please type it in."
-  } else {
-    const parsedDate = new Date(`${dateVal}T00:00:00`)
-    const isValidDate = !Number.isNaN(parsedDate.getTime())
-
-    if (isValidDate) {
-      const diffDays = (refDate.getTime() - parsedDate.getTime()) / (1000 * 60 * 60 * 24)
-      if (parsedDate > refDate || diffDays > DATE_MAX_AGE_DAYS) {
-        dateState = 'unsure'
-        dateHint = 'This date looks far from today. Please check.'
-      } else if (dateConf < UNSURE_BELOW) {
-        dateState = 'unsure'
-        dateHint = 'Check the day and month.'
-      }
+  if (dateUnsure) {
+    if (!dateVal) {
+      dateHint = "We couldn't read this. Please type it in."
     } else {
-      dateState = 'unsure'
-      dateHint = 'Not sure about this one. Please check.'
+      const parsedDate = new Date(`${dateVal}T00:00:00`)
+      if (Number.isNaN(parsedDate.getTime())) {
+        dateHint = 'Not sure about this one. Please check.'
+      } else {
+        const diffDays = (refDate.getTime() - parsedDate.getTime()) / (1000 * 60 * 60 * 24)
+        if (parsedDate > refDate || diffDays > DATE_MAX_AGE_DAYS) {
+          dateHint = 'This date looks far from today. Please check.'
+        } else {
+          dateHint = 'Check the day and month.'
+        }
+      }
     }
   }
 
   // 3. Total evaluation
   const rawTotal = analysis?.total
-  const totalVal = typeof rawTotal?.value === 'number' && Number.isFinite(rawTotal.value) ? rawTotal.value : null
+  const totalVal =
+    typeof rawTotal?.value === 'number' && Number.isFinite(rawTotal.value) ? rawTotal.value : null
   const totalConf = typeof rawTotal?.confidence === 'number' ? rawTotal.confidence : 0
 
-  let totalState = 'ok'
+  const totalUnsure = isFieldUnsure('total', totalVal, totalConf, UNSURE_BELOW, refDate)
+  let totalState = totalUnsure ? 'unsure' : 'ok'
   let totalHint = null
 
-  if (totalVal === null) {
-    totalState = 'unsure'
-    totalHint = "We couldn't read this. Please type it in."
-  } else if (totalVal === 0 || totalVal > BIG_AMOUNT) {
-    totalState = 'unsure'
-    totalHint = 'This amount looks unusual. Please check.'
-  } else if (totalConf < UNSURE_BELOW) {
-    totalState = 'unsure'
-    totalHint = 'Not sure about this one. Please check.'
+  if (totalUnsure) {
+    if (totalVal === null) {
+      totalHint = "We couldn't read this. Please type it in."
+    } else if (totalVal === 0 || totalVal > BIG_AMOUNT) {
+      totalHint = 'This amount looks unusual. Please check.'
+    } else {
+      totalHint = 'Not sure about this one. Please check.'
+    }
   }
 
   // 4. Category evaluation
@@ -82,15 +131,14 @@ export function evaluateFields(analysis = {}, today = new Date()) {
   const categoryVal = rawCategory?.value ? String(rawCategory.value).toLowerCase() : null
   const categoryConf = typeof rawCategory?.confidence === 'number' ? rawCategory.confidence : 0
 
-  let categoryState = 'ok'
+  const categoryUnsure = isFieldUnsure('category', categoryVal, categoryConf, UNSURE_BELOW, refDate)
+  let categoryState = categoryUnsure ? 'unsure' : 'ok'
   let categoryHint = null
 
-  if (!categoryVal) {
-    categoryState = 'unsure'
-    categoryHint = "We couldn't read this. Please type it in."
-  } else if (categoryConf < UNSURE_BELOW) {
-    categoryState = 'unsure'
-    categoryHint = 'Suggested, but not sure. Pick one.'
+  if (categoryUnsure) {
+    categoryHint = !categoryVal
+      ? "We couldn't read this. Please type it in."
+      : 'Suggested, but not sure. Pick one.'
   }
 
   return {
@@ -120,4 +168,3 @@ export function evaluateFields(analysis = {}, today = new Date()) {
     },
   }
 }
-
