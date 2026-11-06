@@ -1,0 +1,440 @@
+{
+  "model": "gemini-3.1-flash-lite",
+  "timestamp": "2026-11-06T05:22:55.673Z",
+  "runs": 1,
+  "apiErrors": 2,
+  "predictions": {
+    "b01.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": "POLO",
+        "confidence": 1
+      },
+      "date": {
+        "value": "2025-12-21",
+        "confidence": 1
+      },
+      "total": {
+        "value": 259000,
+        "confidence": 1
+      },
+      "category": {
+        "value": "shopping",
+        "confidence": 1
+      },
+      "_meta": {
+        "ms": 2308,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "b02.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": "H&M",
+        "confidence": 1
+      },
+      "date": {
+        "value": "2025-08-29",
+        "confidence": 1
+      },
+      "total": {
+        "value": 100950,
+        "confidence": 1
+      },
+      "category": {
+        "value": "shopping",
+        "confidence": 1
+      },
+      "_meta": {
+        "ms": 3622,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "b03.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": "Balenciaga",
+        "confidence": 1
+      },
+      "date": {
+        "value": "2023-03-06",
+        "confidence": 1
+      },
+      "total": {
+        "value": 3744.54,
+        "confidence": 1
+      },
+      "category": {
+        "value": "shopping",
+        "confidence": 1
+      },
+      "_meta": {
+        "ms": 3614,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "b04.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": "ARIENA",
+        "confidence": 1
+      },
+      "date": {
+        "value": "2025-11-05",
+        "confidence": 1
+      },
+      "total": {
+        "value": 23943,
+        "confidence": 1
+      },
+      "category": {
+        "value": "food",
+        "confidence": 1
+      },
+      "_meta": {
+        "ms": 3082,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "b05.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": "ESSEX FARM RESTT",
+        "confidence": 1
+      },
+      "date": {
+        "value": "2025-03-03",
+        "confidence": 1
+      },
+      "total": {
+        "value": 2331,
+        "confidence": 1
+      },
+      "category": {
+        "value": "food",
+        "confidence": 1
+      },
+      "_meta": {
+        "ms": 17339,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "b07.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": "Brahmins Thatte Idli-Basaveshwar nagar",
+        "confidence": 1
+      },
+      "date": {
+        "value": "2026-04-21",
+        "confidence": 1
+      },
+      "total": {
+        "value": 550,
+        "confidence": 1
+      },
+      "category": {
+        "value": "food",
+        "confidence": 1
+      },
+      "_meta": {
+        "ms": 1825,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "b08.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": "M.K HOSPITALITIES",
+        "confidence": 1
+      },
+      "date": {
+        "value": "2025-12-26",
+        "confidence": 1
+      },
+      "total": {
+        "value": 12569,
+        "confidence": 1
+      },
+      "category": {
+        "value": "food",
+        "confidence": 1
+      },
+      "_meta": {
+        "ms": 1734,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "b09.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": "CANTON 168",
+        "confidence": 1
+      },
+      "date": {
+        "value": "2023-11-13",
+        "confidence": 1
+      },
+      "total": {
+        "value": 2110800,
+        "confidence": 1
+      },
+      "category": {
+        "value": "food",
+        "confidence": 1
+      },
+      "_meta": {
+        "ms": 1755,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "b10.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": null,
+        "confidence": 0
+      },
+      "date": {
+        "value": "2026-07-01",
+        "confidence": 0.95
+      },
+      "total": {
+        "value": 190,
+        "confidence": 1
+      },
+      "category": {
+        "value": "other",
+        "confidence": 0.5
+      },
+      "_meta": {
+        "ms": 2690,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "b11.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": "TASTE OF Dilli",
+        "confidence": 1
+      },
+      "date": {
+        "value": "2026-10-16",
+        "confidence": 1
+      },
+      "total": {
+        "value": 510,
+        "confidence": 1
+      },
+      "category": {
+        "value": "food",
+        "confidence": 1
+      },
+      "_meta": {
+        "ms": 1774,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "b12.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": "Imperial Kitchen & Dimsum",
+        "confidence": 1
+      },
+      "date": {
+        "value": "2023-06-04",
+        "confidence": 0.95
+      },
+      "total": {
+        "value": 954838,
+        "confidence": 1
+      },
+      "category": {
+        "value": "food",
+        "confidence": 1
+      },
+      "_meta": {
+        "ms": 2526,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "b13.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": "WASSER WATER SUPPLY & DISTRIBUTION SYSTEM",
+        "confidence": 1
+      },
+      "date": {
+        "value": "2024-06-16",
+        "confidence": 0.95
+      },
+      "total": {
+        "value": 1066.18,
+        "confidence": 1
+      },
+      "category": {
+        "value": "utilities",
+        "confidence": 1
+      },
+      "_meta": {
+        "ms": 2183,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "b14.jpg": {
+      "is_bill": true,
+      "not_bill_reason": null,
+      "merchant": {
+        "value": "Humaira coffee & kitchen",
+        "confidence": 1
+      },
+      "date": {
+        "value": "2024-08-04",
+        "confidence": 1
+      },
+      "total": {
+        "value": 205000,
+        "confidence": 1
+      },
+      "category": {
+        "value": "food",
+        "confidence": 1
+      },
+      "_meta": {
+        "ms": 2072,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "n01.jpg": {
+      "is_bill": false,
+      "not_bill_reason": "a car advertisement poster",
+      "merchant": {
+        "value": null,
+        "confidence": 0
+      },
+      "date": {
+        "value": null,
+        "confidence": 0
+      },
+      "total": {
+        "value": null,
+        "confidence": 0
+      },
+      "category": {
+        "value": "other",
+        "confidence": 0
+      },
+      "_meta": {
+        "ms": 1800,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "n02.jpg": {
+      "is_bill": false,
+      "not_bill_reason": "a fictional anime poster",
+      "merchant": {
+        "value": null,
+        "confidence": 0
+      },
+      "date": {
+        "value": null,
+        "confidence": 0
+      },
+      "total": {
+        "value": null,
+        "confidence": 0
+      },
+      "category": {
+        "value": "other",
+        "confidence": 0
+      },
+      "_meta": {
+        "ms": 1762,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "n03.jpg": {
+      "is_bill": false,
+      "not_bill_reason": "an Aadhaar card document",
+      "merchant": {
+        "value": null,
+        "confidence": 0
+      },
+      "date": {
+        "value": null,
+        "confidence": 0
+      },
+      "total": {
+        "value": null,
+        "confidence": 0
+      },
+      "category": {
+        "value": "other",
+        "confidence": 0
+      },
+      "_meta": {
+        "ms": 1760,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "n04.jpg": {
+      "is_bill": false,
+      "not_bill_reason": "a movie poster",
+      "merchant": {
+        "value": null,
+        "confidence": 0
+      },
+      "date": {
+        "value": null,
+        "confidence": 0
+      },
+      "total": {
+        "value": null,
+        "confidence": 0
+      },
+      "category": {
+        "value": "other",
+        "confidence": 0
+      },
+      "_meta": {
+        "ms": 8344,
+        "model": "gemini-3.1-flash-lite"
+      }
+    },
+    "n05.jpg": {
+      "is_bill": false,
+      "not_bill_reason": "a course completion certificate",
+      "merchant": {
+        "value": null,
+        "confidence": 0
+      },
+      "date": {
+        "value": null,
+        "confidence": 0
+      },
+      "total": {
+        "value": null,
+        "confidence": 0
+      },
+      "category": {
+        "value": "other",
+        "confidence": 0
+      },
+      "_meta": {
+        "ms": 2168,
+        "model": "gemini-3.1-flash-lite"
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+file,is_bill,merchant,date,total,category,condition,notes
+b01.jpg,yes,POLO,2025-12-21,259000,shopping,clear,Indonesian retail receipt (RP 259.000)
+b02.jpg,yes,H&M,2025-08-29,100950,shopping,clear,Indonesian clothing receipt (IDR 100950)
+b03.jpg,yes,BALENCIAGA,,,shopping,clear,"Date 3/6/23 ambiguous (could be 6 Mar or 3 Jun); total 3744.54 is Open Item Total but bottom tax/payment section is cut off"
+b04.jpg,yes,ARIENA,2025-11-05,23943.00,food,angled,Hotel restaurant bill (The Boutique Hotel OTT) Raipur
+b05.jpg,yes,ESSEX FARM RESTT,2025-03-03,2331.00,food,clear,New Delhi restaurant bill
+b06.jpg,yes,ICHIBAN SUSHI,2024-08-19,257565,food,clear,Indonesian sushi restaurant bill (IDR 257565)
+b07.jpg,yes,Brahmins Thatte Idli-Basaveshwar nagar,2026-04-21,550.00,food,clear,Bengaluru restaurant bill
+b08.jpg,yes,M/S G.N HOSPITALITY,2025-12-26,12569.0,food,dim,Dim lighting restaurant bar bill Jammu
+b09.jpg,yes,CANTON 168,2023-11-13,2110800,food,clear,Indonesian restaurant bill (IDR 2110800)
+b10.jpg,yes,,2026-07-01,190.00,food,clear,"No merchant name printed on bill (only header YOUR RECEIPT); date read as DD/MM/YYYY"
+b11.jpg,yes,TASTE OF Dilli,2026-10-16,510.00,food,clear,Ghaziabad restaurant bill
+b12.jpg,yes,Imperial Kitchen & Dimsum,,954838,food,angled,"Date 6/4/23 ambiguous between 2023-04-06 and 2023-06-04; IDR 954838"
+b13.jpg,yes,WASSER WATER SUPPLY & DISTRIBUTION SYSTEM IN,2024-06-16,1066.18,utilities,long,Water bill reading date 2024-06-16 (due date 2024-06-29)
+b14.jpg,yes,Humaira coffee & kitchen,2024-08-04,205000,food,long,Indonesian cafe bill (IDR 205000)
+b15.jpg,yes,NAWAZ CORPORATION,2026-07-01,5200.00,shopping,clear,Rawalpindi stationery invoice
+n01.jpg,no,,,,other,Digital poster of BMW M3 GTR race car with specs
+n02.jpg,no,,,,other,One Piece anime Monkey D Luffy wanted poster graphic
+n03.jpg,no,,,,other,Straw Hat Pirates skull and crossbones logo graphic
+n04.jpg,no,,,,other,Fight Club 1999 movie poster graphic featuring Brad Pitt
+n05.jpg,no,,,,other,Porsche 911 automotive design poster graphic
+

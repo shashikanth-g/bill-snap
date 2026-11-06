@@ -1,21 +1,21 @@
 file,is_bill,merchant,date,total,category,condition,notes
-b01.jpg,yes,,,,,clean,
-b02.jpg,yes,,,,,clean,
-b03.jpg,yes,,,,,clean,
-b04.jpg,yes,,,,,clean,
-b05.jpg,yes,,,,,clean,
-b06.jpg,yes,,,,,clean,
-b07.jpg,yes,,,,,clean,
-b08.jpg,yes,,,,,clean,
-b09.jpg,yes,,,,,clean,
-b10.jpg,yes,,,,,clean,
-b11.jpg,yes,,,,,clean,
-b12.jpg,yes,,,,,clean,
-b13.jpg,yes,,,,,clean,
-b14.jpg,yes,,,,,clean,
-b15.jpg,yes,,,,,clean,
-n01.jpg,no,,,,other,not-a-bill,
-n02.jpg,no,,,,other,not-a-bill,
-n03.jpg,no,,,,other,not-a-bill,
-n04.jpg,no,,,,other,not-a-bill,
-n05.jpg,no,,,,other,not-a-bill,
+b01.jpg,yes,POLO,2025-12-21,259000,shopping,angled,IDR with dot thousands (259.000)
+b02.jpg,yes,H&M,2025-08-29,100950,shopping,angled,IDR; photographed on fabric
+b03.jpg,yes,BALENCIAGA,2023-03-06,3744.54,shopping,angled,"USD; US store so date is MM/DD; total is Open Item Total; bottom of bill cut off"
+b04.jpg,yes,ARIENA,2025-11-05,23943.00,food,dim,INR; hotel restaurant bill; tilted
+b05.jpg,yes,ESSEX FARM RESTT,2025-03-03,2331.00,food,clear,INR; creased paper
+b06.jpg,yes,ICHIBAN SUSHI,2024-08-19,257565,food,clear,IDR
+b07.jpg,yes,Brahmins Thatte Idli-Basaveshwar nagar,2026-04-21,550.00,food,clear,INR
+b08.jpg,yes,M/S G.N HOSPITALITY,2025-12-26,12569.0,food,dim,"INR; dim light; finger covers item names; header also says M.K HOSPITALITIES"
+b09.jpg,yes,CANTON 168,2023-11-13,2110800,food,clear,IDR
+b10.jpg,yes,,2026-07-01,190.00,other,clear,"No merchant printed; item is just BIR so category unclear; date read day first"
+b11.jpg,yes,TASTE OF Dilli,2026-10-16,510.00,food,angled,INR; hand held
+b12.jpg,yes,Imperial Kitchen & Dimsum,2023-04-06,954838,food,angled,"IDR; date 6/4/23 read day first (Indonesia); finger and shadow on bill"
+b13.jpg,yes,WASSER WATER SUPPLY & DISTRIBUTION SYSTEM IN,2024-06-16,1066.18,utilities,long,"PHP; reading date used; due date is 2024-06-29"
+b14.jpg,yes,Humaira coffee & kitchen,2024-08-04,205000,food,long,"IDR; Indonesian month Agu = August; dot thousands"
+b15.jpg,yes,NAWAZ CORPORATION,2026-07-01,5200.00,shopping,clear,"PKR; date read day first"
+n01.jpg,no,,,,,other,Digital poster of BMW M3 GTR race car with specs
+n02.jpg,no,,,,,other,One Piece anime Monkey D Luffy wanted poster graphic
+n03.jpg,no,,,,,id,Indian ID card shown in a phone app screenshot
+n04.jpg,no,,,,,other,Fight Club 1999 movie poster graphic featuring Brad Pitt
+n05.jpg,no,,,,,screenshot,Certificate of achievement screenshot with name date and QR code

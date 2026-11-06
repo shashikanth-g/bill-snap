@@ -152,41 +152,27 @@ async function main() {
           continue
         }
 
-        let attempt = 0
-        let success = false
+        try {
+          const { result, ms, attempts } = await analyzeImage({
+            base64: processedBase64,
+            mimeType: 'image/jpeg',
+            apiKey,
+            model: modelName,
+          })
 
-        while (attempt < 2 && !success) {
-          attempt++
-          try {
-            const { result, ms } = await analyzeImage({
-              base64: processedBase64,
-              mimeType: 'image/jpeg',
-              apiKey,
-              model: modelName,
-            })
+          runMap[filename] = {
+            ...result,
+            _meta: { ms, model: modelName, attempts },
+          }
 
-            runMap[filename] = {
-              ...result,
-              _meta: { ms, model: modelName },
-            }
-
-            console.log(`OK (${ms}ms)`)
-            success = true
-          } catch (err) {
-            const isRateLimit =
-              err.status === 429 ||
-              err.code === 'rate_limited' ||
-              /429|RESOURCE_EXHAUSTED/i.test(err.message || '')
-
-            if (isRateLimit && attempt === 1) {
-              console.log(`RATE LIMITED. Waiting 20s before retry...`)
-              await sleep(20000)
-            } else {
-              const safeMsg = redact(err.message || 'API Call Failed')
-              console.log(`API ERROR (${safeMsg})`)
-              apiErrors++
-              break
-            }
+          console.log(`OK (${ms}ms, attempts: ${attempts})`)
+        } catch (err) {
+          const safeMsg = redact(err.message || 'API Call Failed')
+          console.log(`API ERROR (${safeMsg})`)
+          apiErrors++
+          runMap[filename] = {
+            error: safeMsg,
+            attempts: err.attempts || 2,
           }
         }
 

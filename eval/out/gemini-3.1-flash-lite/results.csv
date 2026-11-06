@@ -1,0 +1,21 @@
+file,condition,truth_is_bill,pred_is_bill,detection_status,truth_merchant,pred_merchant,merchant_conf,merchant_status,truth_date,pred_date,date_conf,date_status,truth_total,pred_total,total_conf,total_status,truth_category,pred_category,category_conf,category_status,ms
+b01.jpg,angled,yes,yes,OK,POLO,POLO,1,OK (1.00),2025-12-21,2025-12-21,1,OK (1.00),259000,259000,1,OK (1.00) (unsure: app_rule),shopping,shopping,1,OK (1.00),2002
+b02.jpg,angled,yes,yes,OK,H&M,H&M,1,OK (1.00),2025-08-29,2025-08-29,1,OK (1.00) (unsure: app_rule),100950,100950,1,OK (1.00) (unsure: app_rule),shopping,shopping,1,OK (1.00),1421
+b03.jpg,angled,yes,yes,OK,BALENCIAGA,Balenciaga,1,OK (1.00),2023-03-06,2023-03-06,1,OK (1.00) (unsure: app_rule),3744.54,3744.54,1,OK (1.00),shopping,shopping,1,OK (1.00),2036
+b04.jpg,dim,yes,yes,OK,ARIENA,ARIENA,1,OK (1.00),2025-11-05,2025-11-05,1,OK (1.00),23943.00,23943,1,OK (1.00),food,food,1,OK (1.00),2138
+b05.jpg,clear,yes,yes,OK,ESSEX FARM RESTT,ESSEX FARM RESTT,1,OK (1.00),2025-03-03,2025-03-03,1,OK (1.00) (unsure: app_rule),2331.00,2331,1,OK (1.00),food,food,1,OK (1.00),1642
+b06.jpg,clear,yes,yes,OK,ICHIBAN SUSHI,Ichiban Sushi,1,OK (1.00),2024-08-19,2024-08-19,1,OK (1.00) (unsure: app_rule),257565,257565,1,OK (1.00) (unsure: app_rule),food,food,1,OK (1.00),15313
+b07.jpg,clear,yes,yes,OK,Brahmins Thatte Idli-Basaveshwar nagar,Brahmins Thatte Idli-Basaveshwar nagar,1,OK (1.00),2026-04-21,2026-04-21,1,OK (1.00),550.00,550,1,OK (1.00),food,food,1,OK (1.00),2480
+b08.jpg,dim,yes,yes,OK,M/S G.N HOSPITALITY,M.K HOSPITALITIES,1,WRONG (1.00),2025-12-26,2025-12-26,1,OK (1.00),12569.0,12569,1,OK (1.00),food,food,1,OK (1.00),1841
+b09.jpg,clear,yes,yes,OK,CANTON 168,CANTON 168,1,OK (1.00),2023-11-13,2023-11-13,1,OK (1.00) (unsure: app_rule),2110800,2110800,1,OK (1.00) (unsure: app_rule),food,food,1,OK (1.00),1561
+b10.jpg,clear,yes,yes,OK,,,0,OK (blank),2026-07-01,2026-07-01,0.95,OK (0.95),190.00,190,1,OK (1.00),other,other,0.5,OK (0.50) (unsure: ai_confidence),1358
+b11.jpg,angled,yes,yes,OK,TASTE OF Dilli,TASTE OF Dilli,1,OK (1.00),2026-10-16,2026-10-16,1,OK (1.00),510.00,510,1,OK (1.00),food,food,1,OK (1.00),14448
+b12.jpg,angled,yes,yes,OK,Imperial Kitchen & Dimsum,Imperial Kitchen & Dimsum,1,OK (1.00),2023-04-06,2023-06-04,0.95,WRONG (0.95) (caught: app_rule),954838,954838,1,OK (1.00) (unsure: app_rule),food,food,1,OK (1.00),1643
+b13.jpg,long,yes,yes,OK,WASSER WATER SUPPLY & DISTRIBUTION SYSTEM IN,WASSER WATER SUPPLY & DISTRIBUTION SYSTEM,1,OK (1.00),2024-06-16,2024-06-16,0.95,OK (0.95) (unsure: app_rule),1066.18,1066.18,1,OK (1.00),utilities,utilities,1,OK (1.00),1935
+b14.jpg,long,yes,yes,OK,Humaira coffee & kitchen,Humaira coffee & kitchen,1,OK (1.00),2024-08-04,2024-08-04,1,OK (1.00) (unsure: app_rule),205000,205000,1,OK (1.00) (unsure: app_rule),food,food,1,OK (1.00),1922
+b15.jpg,clear,yes,yes,OK,NAWAZ CORPORATION,NAWAZ CORPORATION,1,OK (1.00),2026-07-01,2026-07-01,1,OK (1.00),5200.00,5200,1,OK (1.00),shopping,shopping,0.9,OK (0.90),1601
+n01.jpg,other,no,no,OK,,,0,n/a,,,0,n/a,,,0,n/a,,other,0,n/a,1294
+n02.jpg,other,no,no,OK,,,0,n/a,,,0,n/a,,,0,n/a,,other,0,n/a,1480
+n03.jpg,id,no,no,OK,,,0,n/a,,,0,n/a,,,0,n/a,,other,0,n/a,1587
+n04.jpg,other,no,no,OK,,,0,n/a,,,0,n/a,,,0,n/a,,other,0,n/a,1641
+n05.jpg,screenshot,no,no,OK,,,0,n/a,,,0,n/a,,,0,n/a,,other,0,n/a,1904

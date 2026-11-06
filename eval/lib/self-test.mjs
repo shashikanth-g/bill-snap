@@ -1,6 +1,8 @@
 import assert from 'node:assert'
 import { UNSURE_BELOW } from '../../src/lib/config.js'
 import { isFieldUnsure, evaluateFields } from '../../src/lib/fieldState.js'
+import { judgeAll, runThresholdSweep } from './judge.js'
+import { generateResultsMarkdown, generateFailuresMarkdown } from './report.js'
 
 const today = new Date('2026-11-06T00:00:00')
 
@@ -107,5 +109,135 @@ resultsTable.forEach((r) => {
   console.log(`${r['#']} | ${r.Field} | ${r['Input Value']} | ${r.Conf} | ${r.isFieldUnsure}        | ${r.evaluateFields}         | ${r.Verdict}   | ${r.Case}`)
 })
 
-console.log(`\nSelf-test PASSED: ${passedCount}/${testCases.length} cases matched perfectly. Zero disagreements.`)
+console.log(`\nField tests PASSED: ${passedCount}/${testCases.length} cases matched perfectly. Zero disagreements.\n`)
 
+// 6. Test API errors exclusion, correctly left blank, and confidence distribution
+console.log('Testing evaluation scoring logic (API errors exclusion, blank fields, distribution, sweep)...')
+
+const mockGroundTruth = [
+  {
+    file: 'b01.jpg',
+    is_bill: 'yes',
+    merchant: 'Apollo Pharmacy',
+    date: '2026-11-05',
+    total: '100.00',
+    category: 'health',
+    condition: 'clean',
+  },
+  {
+    file: 'b02.jpg',
+    is_bill: 'yes',
+    merchant: '', // Blank ground truth!
+    date: '2026-11-05',
+    total: '200.00',
+    category: 'food',
+    condition: 'clean',
+  },
+  {
+    file: 'b03.jpg',
+    is_bill: 'yes',
+    merchant: 'Test Store',
+    date: '2026-11-05',
+    total: '300.00',
+    category: 'shopping',
+    condition: 'clean',
+  },
+]
+
+const mockPredictions = {
+  'b01.jpg': {
+    is_bill: true,
+    merchant: { value: 'Apollo Pharmacy', confidence: 0.98 },
+    date: { value: '2026-11-05', confidence: 0.90 },
+    total: { value: 100.0, confidence: 0.85 },
+    category: { value: 'health', confidence: 0.70 }, // Correct, but conf < 0.80 -> unnecessary flag by AI
+    _meta: { ms: 1200, attempts: 1 },
+  },
+  'b02.jpg': {
+    is_bill: true,
+    merchant: { value: null, confidence: 0 }, // Correctly left blank!
+    date: { value: '2025-01-01', confidence: 0.95 }, // Wrong date, conf 0.95 -> caught by app rule (old date > 400 days)
+    total: { value: 999.0, confidence: 0.60 }, // Wrong total, conf 0.60 -> caught by AI confidence
+    category: { value: 'other', confidence: 0.95 }, // Wrong category, conf 0.95 -> silent error
+    _meta: { ms: 1500, attempts: 1 },
+  },
+  'b03.jpg': {
+    error: 'Analysis timed out',
+    attempts: 2,
+  },
+}
+
+const { records, summary } = judgeAll({
+  groundTruths: mockGroundTruth,
+  predictions: mockPredictions,
+  threshold: 0.8,
+  today,
+})
+
+// Requirement 1: API error is excluded from scored records
+assert.strictEqual(summary.totalImages, 3, 'Total images must be 3')
+assert.strictEqual(summary.scoredImagesCount, 2, 'Scored images must be 2 (b03 excluded)')
+assert.strictEqual(summary.apiErrors.length, 1, '1 API error recorded')
+assert.strictEqual(summary.apiErrors[0].file, 'b03.jpg')
+assert.strictEqual(summary.apiErrors[0].attempts, 2)
+assert.strictEqual(summary.confusion.tp, 2, 'TP must be 2')
+assert.strictEqual(summary.detectionAccuracy, 100, 'Detection accuracy must be 100% over scored images')
+
+// Requirement 3: Correctly left blank counter
+assert.strictEqual(summary.honesty.correctlyLeftBlank, 1, 'b02 merchant must be correctly left blank')
+
+// Requirement 4: Split by source
+assert.strictEqual(summary.honesty.unnecessaryFlags, 1, '1 unnecessary flag')
+assert.strictEqual(summary.honesty.unnecessarySplit.byAi, 1, 'b01 category flagged by AI confidence')
+assert.strictEqual(summary.honesty.caughtErrors, 2, '2 caught errors')
+assert.strictEqual(summary.honesty.caughtSplit.byRules, 1, 'b02 date caught by app rules (old date)')
+assert.strictEqual(summary.honesty.caughtSplit.byAi, 1, 'b02 total caught by AI confidence (0.60 < 0.8)')
+assert.strictEqual(summary.honesty.silentErrors, 1, 'b02 category silent error (conf 0.95)')
+
+// Requirement 5: Confidence distribution
+const dist = summary.confidenceDistribution
+assert.strictEqual(dist.correct.above95, 1, 'b01 merchant conf 0.98 in above95')
+assert.strictEqual(dist.wrong.from05to08, 1, 'b02 total conf 0.60 in from05to08')
+assert.strictEqual(dist.wrong.above95, 2, 'b02 date (0.95) & category (0.95) in above95')
+
+// Requirement 4: Threshold sweep uses ONLY AI confidence
+const sweep = runThresholdSweep({
+  groundTruths: mockGroundTruth,
+  predictions: mockPredictions,
+  thresholds: [0.5, 0.8, 0.95],
+})
+assert.strictEqual(sweep.length, 3)
+// At threshold 0.8:
+// b02 date has conf 0.95 -> under AI-only sweep, it is NOT caught at 0.8! (Caught only at th > 0.95)
+const sweep08 = sweep.find((s) => s.threshold === 0.8)
+assert.strictEqual(sweep08.caughtErrors, 1, 'Only total (0.60) caught by AI conf at threshold 0.8')
+
+// Requirement 2: Check report markdown does NOT have literal text
+const md = generateResultsMarkdown({
+  model: 'test-model',
+  records,
+  summary,
+  sweepResults: sweep,
+})
+assert(!md.includes('${trueBillsCount}'), 'Report must not contain literal ${trueBillsCount}')
+assert(!md.includes('${confusion.tp}'), 'Report must not contain literal ${confusion.tp}')
+assert(md.includes('| Field | Accuracy (All 2 True Bills) | Accuracy (Detected 2 Bills Only) |'))
+assert(md.includes('- **Scored**: 2 of 3 images'))
+assert(md.includes('## API Errors (not scored)'))
+assert(md.includes('Analysis timed out (attempts: 2)'))
+assert(md.includes('## Confidence Distribution'))
+
+// Check failures markdown excludes API errors from scored failures
+const failMd = generateFailuresMarkdown({ model: 'test-model', records })
+assert(failMd.includes('## API Errors (not scored)'))
+assert(failMd.includes('Analysis timed out (attempts: 2)'))
+assert(!failMd.includes('- [ ] **b03.jpg**: Detection: Expected `bill`'), 'API error must not be listed as a missed bill')
+
+console.log('✓ API errors correctly excluded from scoring and confidence stats')
+console.log('✓ Blank ground-truth matching null AI prediction counted as "correctly left blank"')
+console.log('✓ Confidence analysis split by source (AI confidence vs app rules)')
+console.log('✓ Confidence distribution buckets computed')
+console.log('✓ Threshold sweep uses ONLY AI confidence')
+console.log('✓ Template literal interpolation in markdown reports fixed')
+
+console.log('\nAll self-tests passed successfully!')

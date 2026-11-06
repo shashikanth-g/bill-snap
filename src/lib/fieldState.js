@@ -1,28 +1,17 @@
 import { UNSURE_BELOW, DATE_MAX_AGE_DAYS, BIG_AMOUNT } from './config.js'
 
 /**
- * Pure decision function that determines whether a single extracted field is unsure.
- *
- * A field is unsure if:
- * 1. Its value is null, undefined, or empty.
- * 2. Its confidence is below the threshold.
- * 3. For date: the date is invalid, in the future, or older than DATE_MAX_AGE_DAYS.
- * 4. For total: value is not a finite number, equal to 0, or greater than BIG_AMOUNT.
+ * Checks whether an extracted field is flagged as unsure by app heuristic rules:
+ * - Missing / null / empty value
+ * - Invalid, future, or older than DATE_MAX_AGE_DAYS date
+ * - Total non-finite, equal to 0, or greater than BIG_AMOUNT
  *
  * @param {string} fieldName - 'merchant' | 'date' | 'total' | 'category'
  * @param {any} value - Field value
- * @param {number} [confidence=0] - Confidence score (0.0 to 1.0)
- * @param {number} [threshold=UNSURE_BELOW] - Confidence threshold
  * @param {Date|string} [today=new Date()] - Reference date
- * @returns {boolean} True if unsure, false if ok
+ * @returns {boolean} True if flagged by rules, false otherwise
  */
-export function isFieldUnsure(
-  fieldName,
-  value,
-  confidence = 0,
-  threshold = UNSURE_BELOW,
-  today = new Date()
-) {
+export function isFieldUnsureByRules(fieldName, value, today = new Date()) {
   // 1. Missing or empty value
   if (value === null || value === undefined) return true
   if (typeof value === 'string' && value.trim() === '') return true
@@ -45,7 +34,29 @@ export function isFieldUnsure(
     if (parsedDate > refDate || diffDays > DATE_MAX_AGE_DAYS) return true
   }
 
-  // 4. Confidence threshold check
+  return false
+}
+
+/**
+ * Pure decision function that determines whether a single extracted field is unsure.
+ * Combines app heuristic rules with the AI confidence threshold check.
+ *
+ * @param {string} fieldName - 'merchant' | 'date' | 'total' | 'category'
+ * @param {any} value - Field value
+ * @param {number} [confidence=0] - Confidence score (0.0 to 1.0)
+ * @param {number} [threshold=UNSURE_BELOW] - Confidence threshold
+ * @param {Date|string} [today=new Date()] - Reference date
+ * @returns {boolean} True if unsure, false if ok
+ */
+export function isFieldUnsure(
+  fieldName,
+  value,
+  confidence = 0,
+  threshold = UNSURE_BELOW,
+  today = new Date()
+) {
+  if (isFieldUnsureByRules(fieldName, value, today)) return true
+
   const conf = typeof confidence === 'number' ? confidence : 0
   if (conf < threshold) return true
 

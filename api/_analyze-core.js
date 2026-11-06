@@ -5,7 +5,7 @@ const VALID_CATEGORIES = new Set([
   'food', 'groceries', 'utilities', 'shopping', 'health', 'transport', 'other'
 ])
 
-const TIMEOUT_MS = 25000 // 25 seconds call timeout
+const TIMEOUT_MS = 12000 // 12 seconds per attempt (worst case with 1 retry: 12 + 0.8 + 12 = 24.8s < 28s)
 
 /**
  * Validates whether a string is a real calendar date in YYYY-MM-DD format.
@@ -80,26 +80,34 @@ export async function analyzeImage({ base64, mimeType = 'image/jpeg', apiKey, mo
 
   const startTime = Date.now()
   let response
+  let attempts = 0
+
+  const executeCall = async () => {
+    attempts++
+    return await makeAttempt()
+  }
 
   try {
-    response = await makeAttempt()
+    response = await executeCall()
   } catch (err) {
-    // Check for rate limit or server error (429 or 5xx) to retry ONCE after 800ms
     const status = err.status || err.statusCode
+    const isTimeout = err.code === 'ai_unavailable' && /timed out/i.test(err.message || '')
     const isRetryable =
+      isTimeout ||
       status === 429 ||
       (status >= 500 && status < 600) ||
-      /429|5\d{2}|RESOURCE_EXHAUSTED|UNAVAILABLE/i.test(err.message || '')
+      /429|5\d{2}|RESOURCE_EXHAUSTED|UNAVAILABLE|timed? ?out/i.test(err.message || '')
 
-    if (isRetryable) {
+    if (isRetryable && attempts === 1) {
       await new Promise((r) => setTimeout(r, 800))
       try {
-        response = await makeAttempt()
+        response = await executeCall()
       } catch (retryErr) {
         const error = new Error('The reader is busy right now. Please try again.')
         error.code = retryErr.status === 429 ? 'rate_limited' : 'ai_unavailable'
         error.status = retryErr.status || retryErr.statusCode || status
         error.rawMessage = retryErr.message || err.message
+        error.attempts = attempts
         throw error
       }
     } else {
@@ -107,6 +115,7 @@ export async function analyzeImage({ base64, mimeType = 'image/jpeg', apiKey, mo
       error.code = err.code || 'ai_unavailable'
       error.status = status
       error.rawMessage = err.message
+      error.attempts = attempts
       throw error
     }
   }
@@ -160,7 +169,7 @@ export async function analyzeImage({ base64, mimeType = 'image/jpeg', apiKey, mo
       total: { value: null, confidence: 0 },
       category: { value: 'other', confidence: 0 },
     }
-    return { result, model: modelName, ms: durationMs }
+    return { result, model: modelName, ms: durationMs, attempts }
   }
 
   // If not a bill, ensure all fields are null with 0 confidence
@@ -173,7 +182,7 @@ export async function analyzeImage({ base64, mimeType = 'image/jpeg', apiKey, mo
       total: { value: null, confidence: 0 },
       category: { value: 'other', confidence: 0 },
     }
-    return { result, model: modelName, ms: durationMs }
+    return { result, model: modelName, ms: durationMs, attempts }
   }
 
   const result = {
@@ -197,6 +206,6 @@ export async function analyzeImage({ base64, mimeType = 'image/jpeg', apiKey, mo
     },
   }
 
-  return { result, model: modelName, ms: durationMs }
+  return { result, model: modelName, ms: durationMs, attempts }
 }
 

@@ -1,7 +1,7 @@
 import { UNSURE_BELOW } from '../../src/lib/config.js'
-import { isFieldUnsure } from '../../src/lib/fieldState.js'
+import { isFieldUnsure, isFieldUnsureByRules } from '../../src/lib/fieldState.js'
 
-export { isFieldUnsure }
+export { isFieldUnsure, isFieldUnsureByRules }
 
 /**
  * Computes standard Levenshtein edit distance between two strings.
@@ -103,10 +103,50 @@ export function judgeCategory(pred, truth) {
 /**
  * Judges a single image prediction against ground truth and optional overrides.
  */
-export function judgeRecord({ truth, prediction, overrides = {}, threshold = UNSURE_BELOW, today = new Date() }) {
+export function judgeRecord({
+  truth,
+  prediction,
+  overrides = {},
+  threshold = UNSURE_BELOW,
+  today = new Date(),
+}) {
   const file = truth.file
   const condition = truth.condition || ''
   const truthIsBill = String(truth.is_bill || '').trim().toLowerCase() === 'yes'
+  const fields = ['merchant', 'date', 'total', 'category']
+
+  // Handle API Error: must NOT be treated as a model prediction
+  if (prediction?.error) {
+    const errorFields = {}
+    fields.forEach((f) => {
+      errorFields[f] = {
+        truthVal: truth[f] || '',
+        predVal: null,
+        confidence: 0,
+        status: 'API ERROR',
+        isCorrect: null,
+        isUnsure: null,
+        flagSource: 'none',
+        overridden: false,
+        honestyCategory: 'api_error',
+      }
+    })
+
+    return {
+      file,
+      condition,
+      truthIsBill,
+      predIsBill: null,
+      detectionType: 'API_ERROR',
+      detectionStatus: 'API ERROR',
+      isApiError: true,
+      apiError: prediction.error,
+      attempts: prediction.attempts || null,
+      fields: errorFields,
+      ms: null,
+    }
+  }
+
   const predIsBill = Boolean(prediction?.is_bill)
 
   // 1. Detection judgement
@@ -134,7 +174,6 @@ export function judgeRecord({ truth, prediction, overrides = {}, threshold = UNS
     detectionStatus = overrideCorrect ? 'OK' : 'WRONG'
   }
 
-  const fields = ['merchant', 'date', 'total', 'category']
   const judgedFields = {}
 
   if (!truthIsBill) {
@@ -147,6 +186,7 @@ export function judgeRecord({ truth, prediction, overrides = {}, threshold = UNS
         status: 'n/a',
         isCorrect: null,
         isUnsure: false,
+        flagSource: 'none',
         overridden: false,
         honestyCategory: 'n/a',
       }
@@ -161,6 +201,7 @@ export function judgeRecord({ truth, prediction, overrides = {}, threshold = UNS
         status: 'WRONG (0.00)',
         isCorrect: false,
         isUnsure: false,
+        flagSource: 'none',
         overridden: false,
         honestyCategory: 'missed_bill',
       }
@@ -173,36 +214,61 @@ export function judgeRecord({ truth, prediction, overrides = {}, threshold = UNS
       const predVal = rawPred?.value ?? null
       const confidence = typeof rawPred?.confidence === 'number' ? rawPred.confidence : 0
 
-      let correct = false
-      if (f === 'merchant') correct = judgeMerchant(predVal, truthVal)
-      else if (f === 'date') correct = judgeDate(predVal, truthVal)
-      else if (f === 'total') correct = judgeTotal(predVal, truthVal)
-      else if (f === 'category') correct = judgeCategory(predVal, truthVal)
+      const truthEmpty = truthVal === null || truthVal === undefined || String(truthVal).trim() === ''
+      const predEmpty = predVal === null || predVal === undefined || String(predVal).trim() === ''
 
-      // Apply manual override if specified
-      const overrideKey = `${file}:${f}`
-      let overridden = false
-      if (overrides[overrideKey]) {
-        correct = overrides[overrideKey].trim().toLowerCase() === 'correct'
-        overridden = true
-      }
-
+      // Evaluate flag sources
+      const flaggedByAi = confidence < threshold
+      const flaggedByRules = isFieldUnsureByRules(f, predVal, today)
       const unsure = isFieldUnsure(f, predVal, confidence, threshold, today)
 
-      // Confidence Honesty classification
-      let honestyCategory = 'correct_confident'
-      if (correct) {
-        honestyCategory = unsure ? 'unnecessary_flag' : 'correct_confident'
-      } else {
-        honestyCategory = unsure ? 'caught_error' : 'silent_error'
-      }
+      let flagSource = 'none'
+      if (flaggedByAi && flaggedByRules) flagSource = 'both'
+      else if (flaggedByAi) flagSource = 'ai_confidence'
+      else if (flaggedByRules) flagSource = 'app_rule'
 
-      const confStr = confidence.toFixed(2)
+      let correct = false
+      let honestyCategory = 'correct_confident'
       let statusStr = ''
-      if (correct) {
-        statusStr = `OK (${confStr})`
+      let overridden = false
+
+      // Requirement 3: When ground-truth is EMPTY and AI returned null -> correctly left blank!
+      if (truthEmpty && predEmpty) {
+        correct = true
+        honestyCategory = 'correctly_blank'
+        statusStr = 'OK (blank)'
       } else {
-        statusStr = unsure ? `WRONG (${confStr}) (unsure flag)` : `WRONG (${confStr})`
+        if (f === 'merchant') correct = judgeMerchant(predVal, truthVal)
+        else if (f === 'date') correct = judgeDate(predVal, truthVal)
+        else if (f === 'total') correct = judgeTotal(predVal, truthVal)
+        else if (f === 'category') correct = judgeCategory(predVal, truthVal)
+
+        // Apply manual override if specified
+        const overrideKey = `${file}:${f}`
+        if (overrides[overrideKey]) {
+          correct = overrides[overrideKey].trim().toLowerCase() === 'correct'
+          overridden = true
+        }
+
+        const confStr = confidence.toFixed(2)
+
+        if (correct) {
+          if (unsure) {
+            honestyCategory = 'unnecessary_flag'
+            statusStr = `OK (${confStr}) (unsure: ${flagSource})`
+          } else {
+            honestyCategory = 'correct_confident'
+            statusStr = `OK (${confStr})`
+          }
+        } else {
+          if (unsure) {
+            honestyCategory = 'caught_error'
+            statusStr = `WRONG (${confStr}) (caught: ${flagSource})`
+          } else {
+            honestyCategory = 'silent_error'
+            statusStr = `WRONG (${confStr})`
+          }
+        }
       }
 
       judgedFields[f] = {
@@ -211,7 +277,8 @@ export function judgeRecord({ truth, prediction, overrides = {}, threshold = UNS
         confidence,
         status: statusStr,
         isCorrect: correct,
-        isUnsure: unsure,
+        isUnsure: honestyCategory === 'correctly_blank' ? false : unsure,
+        flagSource: honestyCategory === 'correctly_blank' ? 'none' : flagSource,
         overridden,
         honestyCategory,
       }
@@ -225,6 +292,9 @@ export function judgeRecord({ truth, prediction, overrides = {}, threshold = UNS
     predIsBill,
     detectionType,
     detectionStatus,
+    isApiError: false,
+    apiError: null,
+    attempts: prediction?._meta?.attempts || prediction?.attempts || 1,
     fields: judgedFields,
     ms: prediction?._meta?.ms ?? null,
   }
@@ -232,8 +302,15 @@ export function judgeRecord({ truth, prediction, overrides = {}, threshold = UNS
 
 /**
  * Judges an array of ground truth rows against prediction results.
+ * Excludes API errors from all accuracy, confusion matrix, and confidence statistics.
  */
-export function judgeAll({ groundTruths = [], predictions = {}, overrides = {}, threshold = UNSURE_BELOW, today = new Date() }) {
+export function judgeAll({
+  groundTruths = [],
+  predictions = {},
+  overrides = {},
+  threshold = UNSURE_BELOW,
+  today = new Date(),
+}) {
   const records = groundTruths.map((gt) => {
     const pred = predictions[gt.file] || null
     return judgeRecord({
@@ -245,27 +322,32 @@ export function judgeAll({ groundTruths = [], predictions = {}, overrides = {}, 
     })
   })
 
-  // Compute summary metrics
+  // Separate API errors from scored records
+  const apiErrorRecords = records.filter((r) => r.isApiError)
+  const scoredRecords = records.filter((r) => !r.isApiError)
+
   const totalImages = records.length
-  const trueBills = records.filter((r) => r.truthIsBill)
-  const trueNonBills = records.filter((r) => !r.truthIsBill)
+  const scoredImagesCount = scoredRecords.length
 
-  const tp = records.filter((r) => r.detectionType === 'TP').length
-  const tn = records.filter((r) => r.detectionType === 'TN').length
-  const fp = records.filter((r) => r.detectionType === 'FP').length
-  const fn = records.filter((r) => r.detectionType === 'FN').length
+  const trueBills = scoredRecords.filter((r) => r.truthIsBill)
+  const trueNonBills = scoredRecords.filter((r) => !r.truthIsBill)
 
-  const detectionAccuracy = totalImages > 0 ? ((tp + tn) / totalImages) * 100 : 0
+  const tp = scoredRecords.filter((r) => r.detectionType === 'TP').length
+  const tn = scoredRecords.filter((r) => r.detectionType === 'TN').length
+  const fp = scoredRecords.filter((r) => r.detectionType === 'FP').length
+  const fn = scoredRecords.filter((r) => r.detectionType === 'FN').length
 
-  // Field stats over True Bills
+  const detectionAccuracy = scoredImagesCount > 0 ? ((tp + tn) / scoredImagesCount) * 100 : 0
+
+  // Field stats over True Bills (from scored records only)
   const fieldNames = ['merchant', 'date', 'total', 'category']
   const fieldStatsAllTrueBills = {}
   const fieldStatsDetectedBillsOnly = {}
 
-  const detectedBills = records.filter((r) => r.truthIsBill && r.detectionType === 'TP')
+  const detectedBills = scoredRecords.filter((r) => r.truthIsBill && r.detectionType === 'TP')
 
   fieldNames.forEach((f) => {
-    // Over all true bills (missed bills are wrong)
+    // Over all scored true bills (missed bills count as wrong)
     const correctCountAll = trueBills.filter((r) => r.fields[f]?.isCorrect === true).length
     fieldStatsAllTrueBills[f] = {
       correct: correctCountAll,
@@ -285,19 +367,58 @@ export function judgeAll({ groundTruths = [], predictions = {}, overrides = {}, 
   // Confidence Honesty Metrics (over detected true bills)
   let totalEvaluatedFields = 0
   let correctConfident = 0
+  let correctlyLeftBlank = 0
   let unnecessaryFlags = 0
+  const unnecessarySplit = { byAi: 0, byRules: 0, byBoth: 0 }
   let caughtErrors = 0
+  const caughtSplit = { byAi: 0, byRules: 0, byBoth: 0 }
   let silentErrors = 0
+
+  // Confidence Distribution buckets: <0.5, 0.5-0.8, 0.8-0.95, >=0.95
+  const confidenceDistribution = {
+    correct: { below05: 0, from05to08: 0, from08to95: 0, above95: 0 },
+    wrong: { below05: 0, from05to08: 0, from08to95: 0, above95: 0 },
+    total: { below05: 0, from05to08: 0, from08to95: 0, above95: 0 },
+  }
 
   detectedBills.forEach((r) => {
     fieldNames.forEach((f) => {
       const fData = r.fields[f]
-      if (fData && fData.honestyCategory !== 'n/a') {
+      if (fData && fData.honestyCategory !== 'n/a' && fData.honestyCategory !== 'api_error') {
         totalEvaluatedFields++
-        if (fData.honestyCategory === 'correct_confident') correctConfident++
-        else if (fData.honestyCategory === 'unnecessary_flag') unnecessaryFlags++
-        else if (fData.honestyCategory === 'caught_error') caughtErrors++
-        else if (fData.honestyCategory === 'silent_error') silentErrors++
+
+        // Confidence distribution
+        const conf = typeof fData.confidence === 'number' ? fData.confidence : 0
+        let bucket = 'below05'
+        if (conf >= 0.95) bucket = 'above95'
+        else if (conf >= 0.8) bucket = 'from08to95'
+        else if (conf >= 0.5) bucket = 'from05to08'
+
+        if (fData.isCorrect) {
+          confidenceDistribution.correct[bucket]++
+        } else {
+          confidenceDistribution.wrong[bucket]++
+        }
+        confidenceDistribution.total[bucket]++
+
+        // Categorize honesty
+        if (fData.honestyCategory === 'correct_confident') {
+          correctConfident++
+        } else if (fData.honestyCategory === 'correctly_blank') {
+          correctlyLeftBlank++
+        } else if (fData.honestyCategory === 'unnecessary_flag') {
+          unnecessaryFlags++
+          if (fData.flagSource === 'both') unnecessarySplit.byBoth++
+          else if (fData.flagSource === 'ai_confidence') unnecessarySplit.byAi++
+          else if (fData.flagSource === 'app_rule') unnecessarySplit.byRules++
+        } else if (fData.honestyCategory === 'caught_error') {
+          caughtErrors++
+          if (fData.flagSource === 'both') caughtSplit.byBoth++
+          else if (fData.flagSource === 'ai_confidence') caughtSplit.byAi++
+          else if (fData.flagSource === 'app_rule') caughtSplit.byRules++
+        } else if (fData.honestyCategory === 'silent_error') {
+          silentErrors++
+        }
       }
     })
   })
@@ -310,6 +431,8 @@ export function judgeAll({ groundTruths = [], predictions = {}, overrides = {}, 
     records,
     summary: {
       totalImages,
+      scoredImagesCount,
+      apiErrors: apiErrorRecords.map((r) => ({ file: r.file, error: r.apiError, attempts: r.attempts })),
       trueBillsCount: trueBills.length,
       trueNonBillsCount: trueNonBills.length,
       confusion: { tp, tn, fp, fn },
@@ -319,30 +442,69 @@ export function judgeAll({ groundTruths = [], predictions = {}, overrides = {}, 
       honesty: {
         totalEvaluatedFields,
         correctConfident,
+        correctlyLeftBlank,
         unnecessaryFlags,
+        unnecessarySplit,
         caughtErrors,
+        caughtSplit,
         silentErrors,
         totalErrors,
         silentErrorRate,
         caughtErrorRate,
       },
+      confidenceDistribution,
     },
   }
 }
 
 /**
  * Runs a threshold sweep over a range of confidence thresholds.
+ * Evaluates ONLY raw AI confidence scores without app heuristic rules.
  */
-export function runThresholdSweep({ groundTruths = [], predictions = {}, overrides = {}, thresholds = [0.5, 0.6, 0.7, 0.8, 0.9, 0.95], today = new Date() }) {
+export function runThresholdSweep({
+  groundTruths = [],
+  predictions = {},
+  overrides = {},
+  thresholds = [0.5, 0.6, 0.7, 0.8, 0.9, 0.95],
+}) {
+  // Use a base judge run to get scored detected bills and field correctness
+  const { records } = judgeAll({ groundTruths, predictions, overrides })
+  const detectedBills = records.filter((r) => !r.isApiError && r.truthIsBill && r.detectionType === 'TP')
+  const fieldNames = ['merchant', 'date', 'total', 'category']
+
   return thresholds.map((th) => {
-    const { summary } = judgeAll({ groundTruths, predictions, overrides, threshold: th, today })
+    let caughtErrors = 0
+    let silentErrors = 0
+    let unnecessaryFlags = 0
+
+    detectedBills.forEach((r) => {
+      fieldNames.forEach((f) => {
+        const item = r.fields[f]
+        if (!item || item.honestyCategory === 'n/a' || item.honestyCategory === 'correctly_blank') {
+          return
+        }
+
+        const conf = item.confidence
+        const isFlaggedByAi = conf < th
+
+        if (item.isCorrect) {
+          if (isFlaggedByAi) unnecessaryFlags++
+        } else {
+          if (isFlaggedByAi) caughtErrors++
+          else silentErrors++
+        }
+      })
+    })
+
+    const totalErrors = caughtErrors + silentErrors
+    const silentErrorRate = totalErrors > 0 ? (silentErrors / totalErrors) * 100 : 0
+
     return {
       threshold: th,
-      caughtErrors: summary.honesty.caughtErrors,
-      silentErrors: summary.honesty.silentErrors,
-      silentErrorRate: summary.honesty.silentErrorRate,
-      unnecessaryFlags: summary.honesty.unnecessaryFlags,
+      caughtErrors,
+      silentErrors,
+      silentErrorRate,
+      unnecessaryFlags,
     }
   })
 }
-

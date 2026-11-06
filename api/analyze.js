@@ -101,7 +101,7 @@ export default async function handler(req, res) {
 
   // 6. Execute Gemini Vision analysis
   try {
-    const { result, model: usedModel, ms } = await analyzeImage({
+    const { result, model: usedModel, ms, attempts } = await analyzeImage({
       base64: image,
       mimeType,
       apiKey,
@@ -113,6 +113,7 @@ export default async function handler(req, res) {
       result,
       model: usedModel,
       ms,
+      attempts,
     })
   } catch (err) {
     const code = err.code || 'server_error'
