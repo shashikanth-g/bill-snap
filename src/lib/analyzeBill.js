@@ -101,7 +101,10 @@ export async function analyzeBill({ base64, mimeType = 'image/jpeg', signal }) {
       throw err
     }
 
-    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+    if (
+      (typeof navigator !== 'undefined' && navigator.onLine === false) ||
+      (err instanceof TypeError && /failed to fetch|networkerror|load failed/i.test(err.message || ''))
+    ) {
       throw createError('offline')
     }
 

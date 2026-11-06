@@ -1,16 +1,37 @@
-# React + Vite
+# Bill Snap
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Snap a bill. Check it. Done. A mobile-first, offline-capable PWA to scan, review, and track receipts with AI vision.
 
-Currently, two official plugins are available:
+## Stack
+- **Frontend**: React 19, Vite, Vanilla CSS, Inter font
+- **Storage**: Plain IndexedDB (offline-first, zero external libraries)
+- **AI Vision**: Google Gemini Flash API with structured JSON output
+- **PWA**: Hand-written Service Worker (offline shell cache, network-only `/api`), Web App Manifest
+- **Hosting**: Vercel Serverless Functions (`/api/analyze`)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Getting Started Locally
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Create `.env.local` and configure the variable names:
+   ```env
+   GEMINI_API_KEY=your_key_here
+   GEMINI_MODEL=gemini-3.1-flash-lite
+   ```
+3. Start local development server:
+   ```bash
+   npm run dev
+   ```
 
-## React Compiler
+## Deploying to Vercel
+Set the following environment variables in Vercel Project Settings:
+- `GEMINI_API_KEY`
+- `GEMINI_MODEL`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Evaluation Suite
+- `npm run eval:init` - Create ground truth template
+- `npm run eval` - Benchmark pipeline against test images
+- `npm run eval:selftest` - Run scoring engine and unsure rules self-tests
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Live app: (to be added)

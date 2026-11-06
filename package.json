@@ -8,6 +8,7 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
+    "icons": "node scripts/make-icons.mjs",
     "check:model": "node --env-file=.env.local scripts/check-model.mjs",
     "eval:init": "node eval/init-ground-truth.mjs",
     "eval:selftest": "node eval/lib/self-test.mjs",

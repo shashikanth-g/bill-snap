@@ -27,7 +27,7 @@ function isRateLimited(ip) {
 }
 
 const ALLOWED_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp'])
-const MAX_BASE64_LENGTH = 5_500_000 // ~4MB image threshold
+const MAX_BASE64_LENGTH = 4_000_000 // Vercel 4.5MB request body budget
 
 /**
  * Vercel Serverless Function Handler for POST /api/analyze
@@ -57,8 +57,20 @@ export default async function handler(req, res) {
     })
   }
 
-  // 3. Request body validation
-  const body = req.body || {}
+  // 3. Request body validation (handle parsed object or raw string on Vercel)
+  let body = req.body
+  if (typeof body === 'string') {
+    try {
+      body = JSON.parse(body)
+    } catch {
+      return res.status(400).json({
+        ok: false,
+        code: 'bad_request',
+        message: 'Invalid JSON request body.',
+      })
+    }
+  }
+  body = body || {}
   const { image, mimeType } = body
 
   if (!image || typeof image !== 'string') {
@@ -82,7 +94,7 @@ export default async function handler(req, res) {
     return res.status(413).json({
       ok: false,
       code: 'too_large',
-      message: 'Image is too large. Please use an image under 4MB.',
+      message: 'That photo is too large. Please try again.',
     })
   }
 
