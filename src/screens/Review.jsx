@@ -477,7 +477,7 @@ export default function Review({
             id="field-date"
             type="date"
             max={todayString}
-            className="field-input"
+            className="field-input field-input-date"
             value={date}
             onChange={(e) => {
               setDate(e.target.value)
@@ -676,15 +676,15 @@ export default function Review({
         isOpen={showUnsureSheet}
         onClose={() => setShowUnsureSheet(false)}
       >
-        <div style={{ textAlign: 'center', padding: '8px 0 16px' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--ink-strong)', margin: '0 0 8px 0' }}>
+        <div style={{ textAlign: 'center', padding: '6px 0 14px' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--ink-strong)', margin: '0 0 6px 0' }}>
             {unsureCount} field{unsureCount === 1 ? '' : 's'} still need a check
           </h2>
-          <p style={{ fontSize: '14px', color: 'var(--muted)', margin: '0 0 20px 0', lineHeight: '1.45' }}>
+          <p style={{ fontSize: '13.5px', color: 'var(--muted)', margin: '0 0 16px 0', lineHeight: '1.45' }}>
             Saving without checking can store wrong details.
           </p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <button
               className="btn-primary"
               onClick={handleReviewUnsureFields}
@@ -709,15 +709,15 @@ export default function Review({
         isOpen={showDiscardSheet}
         onClose={() => setShowDiscardSheet(false)}
       >
-        <div style={{ textAlign: 'center', padding: '8px 0 16px' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--ink-strong)', margin: '0 0 8px 0' }}>
+        <div style={{ textAlign: 'center', padding: '6px 0 14px' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--ink-strong)', margin: '0 0 6px 0' }}>
             {isEditMode ? 'Discard changes?' : 'Discard this bill?'}
           </h2>
-          <p style={{ fontSize: '14px', color: 'var(--muted)', margin: '0 0 20px 0' }}>
+          <p style={{ fontSize: '13.5px', color: 'var(--muted)', margin: '0 0 16px 0' }}>
             Any changes you made will not be saved.
           </p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <button
               className="btn-ghost"
               onClick={() => setShowDiscardSheet(false)}

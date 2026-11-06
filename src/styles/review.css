@@ -1,13 +1,11 @@
 /* Review & Edit Screen Styles */
 
 .review-container {
-  position: relative;
+  width: 100%;
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: max(16px, env(safe-area-inset-top)) 20px calc(140px + env(safe-area-inset-bottom)) 20px;
+  padding: max(12px, env(safe-area-inset-top)) 16px calc(116px + env(safe-area-inset-bottom)) 16px;
   box-sizing: border-box;
 }
 
@@ -15,12 +13,12 @@
 .review-top-bar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
 .review-title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--ink-strong);
   margin: 0;
@@ -28,7 +26,7 @@
 }
 
 .review-subtitle {
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--muted);
   margin: 2px 0 0;
 }
@@ -36,13 +34,13 @@
 /* Photo Card */
 .review-photo-card {
   position: relative;
-  height: 164px;
-  border-radius: 24px;
+  height: 140px;
+  border-radius: 20px;
   background: linear-gradient(160deg, #E0E7FF, #EEF0FF);
   border: 1px solid #DDE3FB;
-  box-shadow: 0 4px 0 #CBD3F5, 0 12px 20px rgba(67, 56, 202, 0.1);
+  box-shadow: 0 3px 0 #CBD3F5, 0 10px 18px rgba(67, 56, 202, 0.08);
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,14 +56,14 @@
 
 .review-retake-btn {
   position: absolute;
-  bottom: 12px;
-  right: 12px;
+  bottom: 10px;
+  right: 10px;
   height: 44px;
-  padding: 0 14px;
+  padding: 0 12px;
   background: #FFFFFF;
   border: 1px solid var(--line);
   border-radius: 9999px;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
   color: var(--ink);
   display: flex;
@@ -85,9 +83,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
 }
 
@@ -100,21 +98,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 16px;
   animation: fadeIn 0.2s ease-out;
 }
 
 .photo-lightbox-img {
   max-width: 100%;
   max-height: 88vh;
+  max-height: 88dvh;
   object-fit: contain;
   border-radius: 12px;
 }
 
 .photo-lightbox-close {
   position: absolute;
-  top: max(20px, env(safe-area-inset-top));
-  right: 20px;
+  top: max(16px, env(safe-area-inset-top));
+  right: 16px;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -131,22 +130,22 @@
 .review-banner-amber {
   background: #FEF3C7;
   border: 1px solid #FCD34D;
-  border-radius: 18px;
-  padding: 11px 14px;
+  border-radius: 16px;
+  padding: 9px 12px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
 .review-banner-amber-icon {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: #F59E0B;
   color: #FFFFFF;
   font-weight: 800;
-  font-size: 16px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,31 +155,31 @@
 .review-banner-amber-text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .review-banner-amber-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: #78350F;
 }
 
 .review-banner-amber-sub {
-  font-size: 12px;
+  font-size: 11.5px;
   color: #78350F;
 }
 
 .review-banner-green {
   background: #DCFCE7;
   border: 1px solid #86EFAC;
-  border-radius: 18px;
-  padding: 11px 14px;
+  border-radius: 16px;
+  padding: 9px 12px;
   color: #166534;
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-  font-size: 13px;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-size: 12.5px;
   font-weight: 600;
 }
 
@@ -188,8 +187,8 @@
 .review-fields-wrap {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .field-input {
@@ -197,13 +196,30 @@
   border: none;
   background: transparent;
   font-family: var(--font);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--ink-strong);
   outline: none;
   padding: 4px 0;
   -webkit-appearance: none;
+  appearance: none;
   box-sizing: border-box;
+  text-align: left;
+}
+
+/* Date input: Left-align date value on iOS Safari and match text fields */
+input[type="date"].field-input,
+.field-input-date {
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
+  min-height: 1.3em;
+  line-height: 1.3;
+}
+
+input[type="date"].field-input::-webkit-date-and-time-value,
+.field-input-date::-webkit-date-and-time-value {
+  text-align: left;
 }
 
 .field-input::placeholder {
@@ -218,7 +234,7 @@
 }
 
 .field-currency {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--ink-strong);
 }
@@ -229,17 +245,17 @@
 
 .field-error-text {
   color: #B91C1C;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 .pill-edited {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   background: #E0E7FF;
   color: #3730A3;
-  padding: 3px 10px;
+  padding: 2px 8px;
   border-radius: 9999px;
   display: inline-flex;
   align-items: center;
@@ -250,12 +266,12 @@
   padding: 0 4px;
   background: transparent;
   border: none;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
   color: var(--amber-ink);
   cursor: pointer;
   align-self: flex-start;
-  margin-top: 4px;
+  margin-top: 2px;
   text-decoration: underline;
   text-underline-offset: 3px;
   display: flex;
@@ -265,27 +281,30 @@
 .category-chips-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 6px;
+  gap: 6px;
+  margin-top: 4px;
 }
 
 .category-hint {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--amber-ink);
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
-/* Save Bar */
+/* Fixed Save Bar */
 .review-save-bar {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 26px 20px calc(28px + env(safe-area-inset-bottom));
-  background: linear-gradient(to top, var(--bg) 72%, rgba(247, 248, 250, 0));
-  z-index: 30;
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 12px 16px calc(14px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--bg) 82%, rgba(247, 248, 250, 0));
+  z-index: 100;
   pointer-events: none;
+  box-sizing: border-box;
 }
 
 .review-save-bar button {
@@ -295,6 +314,6 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  height: 52px;
   min-height: 52px;
 }
-

@@ -25,121 +25,121 @@ button,
   transition: transform .12s, box-shadow .12s;
 }
 
-/* Primary 3D Button */
+/* Primary 3D Button (Scaled target ~52px) */
 .btn-primary {
-  height: 58px;
-  border-radius: 29px;
+  height: 52px;
+  border-radius: 26px;
   background: linear-gradient(180deg, var(--primary-light), var(--primary-dark));
   color: #FFFFFF;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
-  padding: 0 24px;
+  padding: 0 20px;
   gap: 8px;
   width: 100%;
   box-shadow: 
-    0 6px 0 var(--primary-edge), 
-    0 16px 24px rgba(67, 56, 202, 0.35), 
+    0 5px 0 var(--primary-edge), 
+    0 14px 20px rgba(67, 56, 202, 0.32), 
     inset 0 2px 0 rgba(255, 255, 255, 0.3);
 }
 
 .btn-primary:active {
-  transform: translateY(5px);
+  transform: translateY(4px);
   box-shadow: 
     0 1px 0 var(--primary-edge), 
-    0 5px 10px rgba(67, 56, 202, 0.35), 
+    0 4px 8px rgba(67, 56, 202, 0.32), 
     inset 0 2px 0 rgba(255, 255, 255, 0.3);
 }
 
 /* Ghost 3D Button */
 .btn-ghost {
-  height: 58px;
-  border-radius: 29px;
+  height: 52px;
+  border-radius: 26px;
   background: var(--surface);
   border: 1px solid var(--line);
   color: var(--ink-strong);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  padding: 0 24px;
+  padding: 0 20px;
   gap: 8px;
   width: 100%;
   box-shadow: 
-    0 5px 0 var(--edge-grey), 
-    0 12px 18px rgba(17, 24, 39, 0.06);
+    0 4px 0 var(--edge-grey), 
+    0 10px 16px rgba(17, 24, 39, 0.05);
 }
 
 .btn-ghost:active {
-  transform: translateY(4px);
+  transform: translateY(3px);
   box-shadow: 
     0 1px 0 var(--edge-grey), 
-    0 3px 6px rgba(17, 24, 39, 0.06);
+    0 3px 6px rgba(17, 24, 39, 0.05);
 }
 
 /* Danger 3D Button */
 .btn-danger {
-  height: 58px;
-  border-radius: 29px;
+  height: 52px;
+  border-radius: 26px;
   background: #FFFFFF;
   border: 1px solid #FECACA;
   color: #B91C1C;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  padding: 0 24px;
+  padding: 0 20px;
   gap: 8px;
   width: 100%;
   box-shadow: 
-    0 5px 0 #FECACA, 
-    0 12px 18px rgba(185, 28, 28, 0.08);
-  transition: transform .12s, box-shadow .12s;
+    0 4px 0 #FECACA, 
+    0 10px 16px rgba(185, 28, 28, 0.08);
 }
 
 .btn-danger:active {
-  transform: translateY(4px);
+  transform: translateY(3px);
   box-shadow: 
     0 1px 0 #FECACA, 
     0 3px 6px rgba(185, 28, 28, 0.08);
 }
 
-/* Icon Button (48x48 circle) */
+/* Icon Button (44x44 circle, tap target >= 44px) */
 .icon-btn {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--surface);
   border: 1px solid var(--line);
   color: var(--ink-strong);
   box-shadow: 
-    0 4px 0 var(--edge-grey), 
-    0 10px 14px rgba(17, 24, 39, 0.06);
+    0 3px 0 var(--edge-grey), 
+    0 8px 12px rgba(17, 24, 39, 0.05);
 }
 
 .icon-btn:active {
-  transform: translateY(4px);
+  transform: translateY(3px);
   box-shadow: 
     0 0 0 var(--edge-grey), 
-    0 2px 4px rgba(17, 24, 39, 0.06);
+    0 2px 4px rgba(17, 24, 39, 0.05);
 }
 
 /* Chips */
 .chip {
+  min-height: 44px;
   height: 44px;
   border-radius: 22px;
   background: var(--surface);
   border: 1px solid var(--line);
   color: var(--ink-strong);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
-  padding: 0 18px;
-  gap: 8px;
+  padding: 0 14px;
+  gap: 6px;
   box-shadow: 
-    0 4px 0 var(--edge-grey), 
-    0 10px 14px rgba(17, 24, 39, 0.06);
+    0 3px 0 var(--edge-grey), 
+    0 8px 12px rgba(17, 24, 39, 0.05);
 }
 
 .chip:active {
-  transform: translateY(4px);
+  transform: translateY(3px);
   box-shadow: 
     0 0 0 var(--edge-grey), 
-    0 2px 4px rgba(17, 24, 39, 0.06);
+    0 2px 4px rgba(17, 24, 39, 0.05);
 }
 
 .chip.chip-on {
@@ -148,38 +148,38 @@ button,
   border-color: transparent;
   font-weight: 700;
   box-shadow: 
-    0 4px 0 var(--primary-edge), 
-    0 10px 16px rgba(67, 56, 202, 0.32), 
+    0 3px 0 var(--primary-edge), 
+    0 8px 14px rgba(67, 56, 202, 0.3), 
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .chip.chip-on:active {
-  transform: translateY(4px);
+  transform: translateY(3px);
   box-shadow: 
     0 0 0 var(--primary-edge), 
-    0 4px 8px rgba(67, 56, 202, 0.32), 
+    0 3px 6px rgba(67, 56, 202, 0.3), 
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
-/* Snap Camera Button (72x72 circle) */
+/* Snap Camera Button (66x66 circle) */
 .snap-btn {
-  width: 72px;
-  height: 72px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
-  border: 4px solid #FFFFFF;
+  border: 3.5px solid #FFFFFF;
   background: linear-gradient(180deg, var(--mint-light), var(--mint));
   color: var(--ink-strong);
   box-shadow: 
-    0 7px 0 var(--mint-edge), 
-    0 18px 26px rgba(20, 184, 166, 0.4), 
+    0 6px 0 var(--mint-edge), 
+    0 16px 24px rgba(20, 184, 166, 0.38), 
     inset 0 2px 0 rgba(255, 255, 255, 0.65);
 }
 
 .snap-btn:active {
-  transform: translateY(6px);
+  transform: translateY(5px);
   box-shadow: 
     0 1px 0 var(--mint-edge), 
-    0 4px 8px rgba(20, 184, 166, 0.4), 
+    0 4px 8px rgba(20, 184, 166, 0.38), 
     inset 0 2px 0 rgba(255, 255, 255, 0.65);
 }
 
@@ -187,31 +187,31 @@ button,
 .card {
   background: var(--surface);
   border: 1px solid #EEF0F4;
-  border-radius: 22px;
-  padding: 14px;
+  border-radius: 18px;
+  padding: 12px 14px;
   box-shadow: 
-    0 4px 0 var(--edge-card), 
-    0 12px 20px rgba(17, 24, 39, 0.05);
+    0 3px 0 var(--edge-card), 
+    0 10px 16px rgba(17, 24, 39, 0.04);
   transition: transform .12s, box-shadow .12s;
   box-sizing: border-box;
 }
 
 .card:active {
-  transform: translateY(3px);
+  transform: translateY(2px);
   box-shadow: 
     0 1px 0 var(--edge-card), 
-    0 4px 8px rgba(17, 24, 39, 0.05);
+    0 3px 6px rgba(17, 24, 39, 0.04);
 }
 
 /* Hero Summary Card */
 .hero-card {
-  border-radius: 26px;
+  border-radius: 22px;
   background: linear-gradient(155deg, #5B52F0, #4338CA);
   color: #FFFFFF;
-  padding: 22px;
+  padding: 18px;
   box-shadow: 
-    0 8px 0 var(--primary-edge), 
-    0 24px 32px rgba(67, 56, 202, 0.3), 
+    0 6px 0 var(--primary-edge), 
+    0 20px 28px rgba(67, 56, 202, 0.28), 
     inset 0 2px 0 rgba(255, 255, 255, 0.28);
   transition: transform .12s, box-shadow .12s;
   box-sizing: border-box;
@@ -221,14 +221,14 @@ button,
 .field {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 11px 16px;
+  border-radius: 16px;
+  padding: 9px 14px;
   box-shadow: 
-    inset 0 2px 4px rgba(17, 24, 39, 0.05), 
-    0 3px 0 var(--edge-card);
+    inset 0 2px 4px rgba(17, 24, 39, 0.04), 
+    0 2px 0 var(--edge-card);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   box-sizing: border-box;
   transition: border-color .15s, box-shadow .15s;
 }
@@ -240,13 +240,13 @@ button,
 }
 
 .field .field-label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--muted);
 }
 
 .field .field-value {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--ink);
   line-height: 1.25;
@@ -265,7 +265,7 @@ button,
 }
 
 .field.field-warn .field-subtext {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--amber-ink);
   margin-top: 2px;
@@ -274,10 +274,10 @@ button,
 /* Status Pills */
 .pill-sure,
 .pill-check {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   border-radius: 10px;
-  padding: 2px 8px;
+  padding: 2px 7px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -296,9 +296,9 @@ button,
 
 /* Category Icon Tile (used inside cards) */
 .icon-tile {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -309,36 +309,38 @@ button,
 .cat-pill {
   display: inline-flex;
   align-items: center;
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
 }
 
-/* Bottom Navigation Bar */
+/* Fixed Bottom Navigation Bar */
 .bottom-nav {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: calc(88px + env(safe-area-inset-bottom));
+  max-width: 430px;
+  margin: 0 auto;
+  height: calc(76px + env(safe-area-inset-bottom));
   background: #FFFFFF;
   border-top: 1px solid #E5E7EB;
-  border-radius: 28px 28px 0 0;
+  border-radius: 26px 26px 0 0;
   box-shadow: 0 -10px 24px rgba(17, 24, 39, 0.06);
   display: flex;
   align-items: flex-start;
   justify-content: space-around;
-  padding: 10px 24px 0;
+  padding: 6px 20px 0;
   box-sizing: border-box;
   z-index: 100;
 }
 
 .bottom-nav .nav-item {
-  width: 96px;
-  height: 56px;
-  min-width: 96px;
-  min-height: 56px;
+  width: 80px;
+  height: 48px;
+  min-width: 72px;
+  min-height: 44px;
   border: none;
   background: transparent;
   display: flex;
@@ -346,7 +348,7 @@ button,
   align-items: center;
   justify-content: center;
   gap: 2px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--muted);
   cursor: pointer;
@@ -359,9 +361,9 @@ button,
 }
 
 .bottom-nav .nav-icon-box {
-  width: 48px;
-  height: 30px;
-  border-radius: 15px;
+  width: 44px;
+  height: 28px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -374,8 +376,8 @@ button,
 }
 
 .bottom-nav .nav-snap-wrapper {
-  width: 96px;
-  height: 56px;
+  width: 80px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -383,14 +385,14 @@ button,
 
 .bottom-nav .nav-snap-wrapper .snap-btn {
   position: relative;
-  top: -30px;
+  top: -24px;
 }
 
 /* Entrance Animations */
 @keyframes riseUp {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -429,12 +431,12 @@ button,
 
 /* Skeleton shimmer loading cards */
 .skeleton-card {
-  height: 76px;
-  border-radius: 22px;
+  height: 68px;
+  border-radius: 18px;
   background: #EEF0F4;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 0 var(--edge-card);
+  box-shadow: 0 3px 0 var(--edge-card);
 }
 
 .skeleton-card::after {
@@ -465,9 +467,10 @@ button,
 .sheet-modal {
   width: 100%;
   max-width: 430px;
+  max-height: 85vh;
   max-height: 85dvh;
   background: #FFFFFF;
-  border-radius: 28px 28px 0 0;
+  border-radius: 24px 24px 0 0;
   box-shadow: 0 -10px 32px rgba(17, 24, 39, 0.14);
   display: flex;
   flex-direction: column;
@@ -476,18 +479,18 @@ button,
 }
 
 .sheet-handle {
-  width: 40px;
+  width: 36px;
   height: 4px;
   border-radius: 2px;
   background: #D1D5DB;
-  margin: 12px auto 8px;
+  margin: 10px auto 6px;
   flex-shrink: 0;
 }
 
 .sheet-content {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 12px 24px calc(24px + env(safe-area-inset-bottom));
+  padding: 10px 20px calc(20px + env(safe-area-inset-bottom));
 }
 
 @keyframes fadeIn {
@@ -502,17 +505,19 @@ button,
 
 /* Toast Notification */
 .toast-pill {
-  position: absolute;
-  bottom: calc(98px + env(safe-area-inset-bottom));
-  left: 20px;
-  right: 20px;
+  position: fixed;
+  bottom: calc(86px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: calc(100% - 32px);
+  max-width: 398px;
   z-index: 150;
   background: #1E1B4B;
   color: #FFFFFF;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   border-radius: 16px;
-  padding: 8px 16px;
+  padding: 8px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -527,7 +532,7 @@ button,
   background: none;
   border: none;
   color: #7CF0DC;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
@@ -536,8 +541,8 @@ button,
 }
 
 @keyframes toastUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from { transform: translate(-50%, 20px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
 }
 
 /* Respect user's motion preferences */

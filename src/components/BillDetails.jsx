@@ -19,22 +19,22 @@ export default function BillDetails({ bill, onEdit, onDelete }) {
           alt={bill.merchant}
           style={{
             width: '100%',
-            maxHeight: '220px',
+            maxHeight: '190px',
             objectFit: 'cover',
-            borderRadius: '20px',
-            marginBottom: '16px',
+            borderRadius: '18px',
+            marginBottom: '14px',
             display: 'block',
           }}
         />
       ) : null}
 
       {/* Merchant name */}
-      <h2 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--ink-strong)', margin: '0 0 4px 0' }}>
+      <h2 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--ink-strong)', margin: '0 0 2px 0' }}>
         {bill.merchant}
       </h2>
 
       {/* Large total amount */}
-      <div style={{ fontSize: '34px', fontWeight: '800', color: 'var(--ink-strong)', letterSpacing: '-0.8px', marginBottom: '18px' }}>
+      <div style={{ fontSize: '30px', fontWeight: '800', color: 'var(--ink-strong)', letterSpacing: '-0.8px', marginBottom: '14px' }}>
         {formatINR(bill.total)}
       </div>
 
@@ -44,12 +44,12 @@ export default function BillDetails({ bill, onEdit, onDelete }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '12px 0',
+          padding: '10px 0',
           borderTop: '1px solid var(--line)',
         }}
       >
-        <span style={{ fontSize: '14px', color: 'var(--muted)', fontWeight: '500' }}>Date</span>
-        <span style={{ fontSize: '15px', fontWeight: '600', color: 'var(--ink-strong)' }}>
+        <span style={{ fontSize: '13px', color: 'var(--muted)', fontWeight: '500' }}>Date</span>
+        <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--ink-strong)' }}>
           {formatLongDate(bill.date)}
         </span>
       </div>
@@ -60,20 +60,20 @@ export default function BillDetails({ bill, onEdit, onDelete }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '12px 0',
+          padding: '10px 0',
           borderTop: '1px solid var(--line)',
-          marginBottom: '24px',
+          marginBottom: '20px',
         }}
       >
-        <span style={{ fontSize: '14px', color: 'var(--muted)', fontWeight: '500' }}>Category</span>
+        <span style={{ fontSize: '13px', color: 'var(--muted)', fontWeight: '500' }}>Category</span>
         <span
           style={{
-            fontSize: '12px',
+            fontSize: '11.5px',
             fontWeight: '600',
             backgroundColor: cat.bg,
             color: cat.text,
-            padding: '4px 10px',
-            borderRadius: '10px',
+            padding: '3px 9px',
+            borderRadius: '8px',
           }}
         >
           {cat.name}
@@ -82,11 +82,11 @@ export default function BillDetails({ bill, onEdit, onDelete }) {
 
       {/* Bottom actions: Edit & Delete, or Inline confirmation */}
       {confirmDelete ? (
-        <div style={{ textAlign: 'center', paddingTop: '4px' }}>
-          <p style={{ fontSize: '17px', fontWeight: '800', color: 'var(--ink-strong)', margin: '0 0 16px 0' }}>
+        <div style={{ textAlign: 'center', paddingTop: '2px' }}>
+          <p style={{ fontSize: '15px', fontWeight: '800', color: 'var(--ink-strong)', margin: '0 0 14px 0' }}>
             Delete this bill?
           </p>
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '10px' }}>
             <button
               className="btn-ghost"
               style={{ flex: 1 }}
@@ -104,7 +104,7 @@ export default function BillDetails({ bill, onEdit, onDelete }) {
           </div>
         </div>
       ) : (
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: 'flex', gap: '10px' }}>
           <button
             className="btn-ghost"
             style={{ flex: 1 }}
@@ -124,4 +124,3 @@ export default function BillDetails({ bill, onEdit, onDelete }) {
     </div>
   )
 }
-

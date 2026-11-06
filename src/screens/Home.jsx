@@ -96,19 +96,19 @@ export default function Home({ onEditBill }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '32px 20px 8px 20px',
+          padding: '20px 16px 6px 16px',
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <span style={{ fontSize: '14px', color: 'var(--muted)', fontWeight: '500' }}>
+          <span style={{ fontSize: '13px', color: 'var(--muted)', fontWeight: '500' }}>
             {greeting()}
           </span>
           <h1
             style={{
               margin: 0,
-              fontSize: '28px',
+              fontSize: '24px',
               fontWeight: '800',
-              letterSpacing: '-0.6px',
+              letterSpacing: '-0.5px',
               color: 'var(--ink-strong)',
             }}
           >
@@ -128,7 +128,7 @@ export default function Home({ onEditBill }) {
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           ) : (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="11" cy="11" r="7" />
               <path d="M21 21l-4.35-4.35" />
             </svg>
@@ -139,11 +139,11 @@ export default function Home({ onEditBill }) {
       {/* Search Bar (slides open under header) */}
       <div
         style={{
-          maxHeight: searchOpen ? '74px' : '0px',
+          maxHeight: searchOpen ? '68px' : '0px',
           opacity: searchOpen ? 1 : 0,
           overflow: 'hidden',
           transition: 'max-height 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s ease',
-          padding: searchOpen ? '4px 20px 10px 20px' : '0 20px',
+          padding: searchOpen ? '4px 16px 8px 16px' : '0 16px',
         }}
       >
         <div
@@ -151,8 +151,8 @@ export default function Home({ onEditBill }) {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            height: '50px',
-            padding: '0 8px 0 14px',
+            height: '46px',
+            padding: '0 8px 0 12px',
             gap: '8px',
           }}
         >
@@ -171,7 +171,7 @@ export default function Home({ onEditBill }) {
               border: 'none',
               background: 'transparent',
               outline: 'none',
-              fontSize: '15px',
+              fontSize: '16px',
               fontWeight: '600',
               color: 'var(--ink)',
               fontFamily: 'inherit',
@@ -203,16 +203,16 @@ export default function Home({ onEditBill }) {
       </div>
 
       {/* 2. Hero summary card */}
-      <section style={{ margin: '14px 20px 0 20px' }}>
+      <section style={{ margin: '10px 16px 0 16px' }}>
         <div
           className="hero-card"
           style={{
             position: 'relative',
             overflow: 'hidden',
-            padding: '20px',
+            padding: '18px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '14px',
+            gap: '12px',
           }}
         >
           {/* Decorative blurred circles */}
@@ -221,9 +221,9 @@ export default function Home({ onEditBill }) {
               position: 'absolute',
               right: '-40px',
               top: '-50px',
-              width: '170px',
-              height: '170px',
-              borderRadius: '85px',
+              width: '150px',
+              height: '150px',
+              borderRadius: '75px',
               background: '#8B7CFF',
               opacity: 0.45,
               filter: 'blur(8px)',
@@ -236,9 +236,9 @@ export default function Home({ onEditBill }) {
               position: 'absolute',
               right: '30px',
               bottom: '-70px',
-              width: '120px',
-              height: '120px',
-              borderRadius: '60px',
+              width: '110px',
+              height: '110px',
+              borderRadius: '55px',
               background: '#5EEAD4',
               opacity: 0.22,
               filter: 'blur(14px)',
@@ -249,16 +249,16 @@ export default function Home({ onEditBill }) {
 
           {/* Row 1: Spent in {monthLabel} + count pill */}
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '13px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.9)' }}>
+            <span style={{ fontSize: '12.5px', fontWeight: '500', color: 'rgba(255, 255, 255, 0.9)' }}>
               Spent in {monthLabel}
             </span>
             <span
               style={{
-                fontSize: '12px',
+                fontSize: '11px',
                 fontWeight: '700',
                 background: 'rgba(255, 255, 255, 0.2)',
-                padding: '4px 10px',
-                borderRadius: '12px',
+                padding: '3px 9px',
+                borderRadius: '10px',
               }}
             >
               {count} {count === 1 ? 'bill' : 'bills'}
@@ -266,7 +266,7 @@ export default function Home({ onEditBill }) {
           </div>
 
           {/* Row 2: Total amount */}
-          <div style={{ position: 'relative', fontSize: '38px', fontWeight: '800', letterSpacing: '-1.2px', lineHeight: 1 }}>
+          <div style={{ position: 'relative', fontSize: '32px', fontWeight: '800', letterSpacing: '-1px', lineHeight: 1 }}>
             {formatINR(total)}
           </div>
 
@@ -275,8 +275,8 @@ export default function Home({ onEditBill }) {
             style={{
               position: 'relative',
               display: 'flex',
-              height: '8px',
-              borderRadius: '4px',
+              height: '7px',
+              borderRadius: '3.5px',
               overflow: 'hidden',
               gap: '2px',
             }}
@@ -301,8 +301,8 @@ export default function Home({ onEditBill }) {
             style={{
               position: 'relative',
               display: 'flex',
-              gap: '14px',
-              fontSize: '12px',
+              gap: '12px',
+              fontSize: '11.5px',
               fontWeight: '500',
               color: 'rgba(255, 255, 255, 0.92)',
               flexWrap: 'wrap',
@@ -312,12 +312,12 @@ export default function Home({ onEditBill }) {
               <span>No bills yet</span>
             ) : (
               segments.slice(0, 3).map((seg, idx) => (
-                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <span
                     style={{
-                      width: '8px',
-                      height: '8px',
-                      borderRadius: '4px',
+                      width: '7px',
+                      height: '7px',
+                      borderRadius: '3.5px',
                       background: seg.color,
                       display: 'inline-block',
                     }}
@@ -335,8 +335,8 @@ export default function Home({ onEditBill }) {
         className="no-scrollbar"
         style={{
           display: 'flex',
-          gap: '10px',
-          padding: '26px 20px 8px 20px',
+          gap: '8px',
+          padding: '18px 16px 6px 16px',
           overflowX: 'auto',
           WebkitOverflowScrolling: 'touch',
         }}
@@ -357,12 +357,12 @@ export default function Home({ onEditBill }) {
       </section>
 
       {/* 4. Section label "RECENT" */}
-      <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--muted)', letterSpacing: '0.4px', padding: '8px 20px 0 20px' }}>
+      <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--muted)', letterSpacing: '0.4px', padding: '6px 16px 0 16px' }}>
         RECENT
       </div>
 
       {/* 5. Bill list / 6. Loading & Empty states */}
-      <section style={{ padding: '12px 20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <section style={{ padding: '10px 16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {loading ? (
           /* While loading from IndexedDB, show 2 shimmer skeletons */
           <>
@@ -371,29 +371,29 @@ export default function Home({ onEditBill }) {
           </>
         ) : filteredBills.length === 0 ? (
           /* Empty state */
-          <div style={{ textAlign: 'center', padding: '40px 10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ textAlign: 'center', padding: '32px 10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <div
               style={{
-                width: '120px',
-                height: '120px',
-                borderRadius: '38px',
+                width: '96px',
+                height: '96px',
+                borderRadius: '30px',
                 background: 'linear-gradient(160deg, #EEF0FF, #C7D2FE)',
-                boxShadow: '0 10px 0 #A5B4FC, 0 24px 34px rgba(67, 56, 202, 0.2), inset 0 3px 0 rgba(255, 255, 255, 0.85)',
+                boxShadow: '0 8px 0 #A5B4FC, 0 20px 28px rgba(67, 56, 202, 0.18), inset 0 3px 0 rgba(255, 255, 255, 0.85)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'var(--primary)',
-                marginBottom: '20px',
+                marginBottom: '16px',
               }}
             >
-              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6" />
               </svg>
             </div>
-            <h2 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--ink-strong)', margin: '0 0 8px 0' }}>
+            <h2 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--ink-strong)', margin: '0 0 6px 0' }}>
               No bills here yet
             </h2>
-            <p style={{ fontSize: '15px', color: 'var(--muted)', margin: 0, maxWidth: '280px' }}>
+            <p style={{ fontSize: '14px', color: 'var(--muted)', margin: 0, maxWidth: '260px' }}>
               {searchQuery.trim()
                 ? `No bills match '${searchQuery.trim()}'.`
                 : selectedCategory === 'all'
@@ -414,33 +414,33 @@ export default function Home({ onEditBill }) {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '14px',
+                  gap: '12px',
                   cursor: 'pointer',
                 }}
               >
-                {/* 48x48 category icon tile */}
+                {/* Category icon tile */}
                 <div
                   style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '15px',
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '13px',
                     backgroundColor: cat.bg,
                     color: cat.text,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexShrink: 0,
-                    boxShadow: 'inset 0 2px 0 rgba(255, 255, 255, 0.8), 0 3px 0 rgba(0, 0, 0, 0.08)',
+                    boxShadow: 'inset 0 2px 0 rgba(255, 255, 255, 0.8), 0 2px 0 rgba(0, 0, 0, 0.08)',
                   }}
                 >
-                  <CategoryIcon category={bill.category} size={24} />
+                  <CategoryIcon category={bill.category} size={20} />
                 </div>
 
                 {/* Middle details: Merchant, category pill & date */}
-                <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   <div
                     style={{
-                      fontSize: '15px',
+                      fontSize: '14.5px',
                       fontWeight: '700',
                       color: 'var(--ink-strong)',
                       whiteSpace: 'nowrap',
@@ -450,27 +450,27 @@ export default function Home({ onEditBill }) {
                   >
                     {bill.merchant}
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <span
                       style={{
-                        fontSize: '12px',
+                        fontSize: '11px',
                         fontWeight: '600',
                         backgroundColor: cat.bg,
                         color: cat.text,
-                        padding: '3px 9px',
-                        borderRadius: '10px',
+                        padding: '2px 8px',
+                        borderRadius: '8px',
                       }}
                     >
                       {cat.name}
                     </span>
-                    <span style={{ fontSize: '12px', color: 'var(--muted)' }}>
+                    <span style={{ fontSize: '11.5px', color: 'var(--muted)' }}>
                       {formatShortDate(bill.date)}
                     </span>
                   </div>
                 </div>
 
                 {/* Right: Amount */}
-                <div style={{ fontSize: '16px', fontWeight: '800', color: 'var(--ink-strong)' }}>
+                <div style={{ fontSize: '15px', fontWeight: '800', color: 'var(--ink-strong)' }}>
                   {formatINR(bill.total)}
                 </div>
               </div>

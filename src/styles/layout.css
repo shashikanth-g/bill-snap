@@ -16,9 +16,12 @@ body {
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
 }
 
 #root {
+  min-height: 100vh;
   min-height: 100dvh;
   display: flex;
   justify-content: center;
@@ -28,6 +31,7 @@ body {
 /* AppShell phone container */
 .app-shell {
   position: relative;
+  height: 100vh;
   height: 100dvh;
   max-width: 430px;
   width: 100%;
@@ -43,6 +47,6 @@ body {
   inset: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: max(16px, env(safe-area-inset-top)) 16px calc(110px + env(safe-area-inset-bottom)) 16px;
+  padding: max(14px, env(safe-area-inset-top)) 16px calc(100px + env(safe-area-inset-bottom)) 16px;
   box-sizing: border-box;
 }
